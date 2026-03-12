@@ -425,7 +425,7 @@ body:has(.box:hover) .spans-n {
 }
 /* SCREEN WIDTH  */
 
-.magic-link {
+/* .magic-link {
   text-align: center;
   margin: 10px 0;
 }
@@ -520,6 +520,214 @@ body:has(.box:hover) .spans-n {
     left: -50%;
     transform: translateX(50%);
     bottom: 105%;
+    width: 100%;
+    height: 2px;
+    background-color: black;
+  }
+} */
+form {
+  display: flex;
+  margin: 20px;
+  justify-content: center;
+  align-items: center;
+}
+form .textarea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 94%;
+}
+form .textarea textarea {
+  width: 100%;
+  padding: 10px;
+}
+form .textarea textarea::placeholder {
+  text-align: center;
+  padding: 3px;
+}
+form .textarea button {
+  position: relative;
+  padding: 10px;
+  margin: 5px;
+  border: none;
+  background-color: black;
+  color: wheat;
+  border-radius: 4px;
+  cursor: pointer;
+}
+form .textarea button::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(50%);
+  top: 103%;
+  width: 0;
+  height: 2px;
+  background-color: black;
+  transition: 0.3s ease;
+}
+form .textarea .btn {
+  position: relative;
+  padding: 10px;
+  border: none;
+  background-color: black;
+  color: wheat;
+  border-radius: 4px;
+}
+form .textarea .btn:hover {
+  background-color: blue;
+}
+form .textarea .btn::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(50%);
+  top: 103%;
+  width: 0;
+  height: 2px;
+  background-color: black;
+  transition: 0.3s ease;
+}
+form .textarea:has(.btn:hover) .btn::after {
+  content: "";
+  position: absolute;
+  left: -50%;
+  transform: translateX(50%);
+  top: 103%;
+  width: 100%;
+  height: 2px;
+  background-color: black;
+}
+form .textarea .btn::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(50%);
+  bottom: 103%;
+  width: 0;
+  height: 2px;
+  background-color: black;
+  transition: 0.3s ease;
+}
+
+form .textarea:has(.btn:hover) .btn::before {
+  content: "";
+  position: absolute;
+  left: -50%;
+  transform: translateX(50%);
+  bottom: 103%;
+  width: 100%;
+  height: 2px;
+  background-color: black;
+}
+/* Reset button */
+form .textarea .btnre {
+  position: relative;
+  padding: 10px;
+  border: none;
+  background-color: black;
+  color: wheat;
+  border-radius: 4px;
+}
+form .textarea .btnre:hover {
+  background-color: red;
+}
+form .textarea .btnre::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(50%);
+  top: 103%;
+  width: 0;
+  height: 2px;
+  background-color: black;
+  transition: 0.3s ease;
+}
+form .textarea:has(.btnre:hover) .btnre::after {
+  content: "";
+  position: absolute;
+  left: -50%;
+  transform: translateX(50%);
+  top: 103%;
+  width: 100%;
+  height: 2px;
+  background-color: black;
+}
+form .textarea .btnre::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(50%);
+  bottom: 103%;
+  width: 0;
+  height: 2px;
+  background-color: black;
+  transition: 0.3s ease;
+}
+
+form .textarea:has(.btnre:hover) .btnre::before {
+  content: "";
+  position: absolute;
+  left: -50%;
+  transform: translateX(50%);
+  bottom: 103%;
+  width: 100%;
+  height: 2px;
+  background-color: black;
+}
+/* End Reset button  */
+@media max-width:400px {
+  form .textarea .btnre {
+    position: relative;
+    padding: 10px;
+    border: none;
+    background-color: black;
+    color: wheat;
+    border-radius: 4px;
+  }
+  form .textarea .btnre:focus {
+    background-color: red;
+  }
+  form .textarea .btnre::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(50%);
+    top: 103%;
+    width: 0;
+    height: 2px;
+    background-color: black;
+    transition: 0.3s ease;
+  }
+  form .textarea:has(.btnre:focus) .btnre::after {
+    content: "";
+    position: absolute;
+    left: -50%;
+    transform: translateX(50%);
+    top: 103%;
+    width: 100%;
+    height: 2px;
+    background-color: black;
+  }
+  form .textarea .btnre::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(50%);
+    bottom: 103%;
+    width: 0;
+    height: 2px;
+    background-color: black;
+    transition: 0.3s ease;
+  }
+
+  form .textarea:has(.btnre:focus) .btnre::before {
+    content: "";
+    position: absolute;
+    left: -50%;
+    transform: translateX(50%);
+    bottom: 103%;
     width: 100%;
     height: 2px;
     background-color: black;
