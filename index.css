@@ -1,16 +1,39 @@
+@font-face {
+  font-family: "zain";
+  src: url(zain.ttf);
+}
+@font-face {
+  font-family: "eng";
+  src: url(eng.otf);
+}
+@font-face {
+  font-family: "aman";
+  src: url(aman.otf);
+}
+@font-face {
+  font-family: "alex";
+  src: url(alex.ttf);
+}
+@font-face {
+  font-family: "for";
+  src: url(foregore.otf);
+}
+:root {
+  --main-color: #ff0000;
+  --ar1: "zain.ttf";
+  --eng1: "aman.otf";
+  --eng12: "eng.otf";
+}
 * {
   box-sizing: border-box;
   user-select: none;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-family: "aman";
 }
 
 body {
   margin: 0;
 }
 
-:root {
-  --main-color: red;
-}
 img {
   object-fit: cover;
 }
@@ -40,6 +63,7 @@ header {
   width: 100%;
   top: 0;
   z-index: 20;
+  transition: 0.5s;
 }
 header::after {
   content: " أقل جودة بأعلي الأسعار";
@@ -53,8 +77,11 @@ header::after {
   transform: translateX(-50%);
   top: 89%;
   border-radius: 12px;
+  font-family: "zain";
 }
-
+body:has(.box:hover) header {
+  background-color: #5da87a;
+}
 @media (max-width: 767px) {
   header {
     font-size: 13px;
@@ -113,6 +140,15 @@ header .container::after {
     filter: blur(3px);
   }
 }
+@media (max-width: 330px) {
+  header::after {
+    font-size: 14px;
+    width: 154px;
+    height: auto;
+    top: 95%;
+  }
+}
+
 header .container .logo {
   display: inline;
   animation: for-logo 1s linear alternate-reverse infinite;
@@ -126,6 +162,9 @@ header .container .logo {
     transform: rotate(-6deg) scale(1.4);
   }
 }
+header .container .logo:hover {
+  color: black;
+}
 
 header .container ul {
   text-transform: capitalize;
@@ -135,13 +174,16 @@ header .container ul {
 header .container ul li {
   padding: 10px;
   transition: 0.3s;
+  color: white;
   font-size: 14px;
 }
 header .container ul li:hover {
-  color: white;
+  color: black;
   transform: scale(1.2);
 }
-
+.headA {
+  font-family: "zain";
+}
 /* end header */
 
 /* start section of PDFs */
@@ -152,6 +194,10 @@ header .container ul li:hover {
   font-weight: normal;
   margin: 25px;
   position: relative;
+  transition: 0.5s;
+}
+body:has(.box:hover) .special-heading {
+  color: #5da87a;
 }
 @media (max-width: 380px) {
   .special-heading {
@@ -240,9 +286,9 @@ header .container ul li:hover {
   transition: 0.4s;
 }
 .spans-n span {
+  font-family: "zain";
   font-weight: bold;
   font-size: 25px;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 .spans-n span:nth-child(2) {
   color: blue;
@@ -273,23 +319,53 @@ body:has(.box:hover) .spans-n {
   transform: scale(1.2) translatey(-30px);
 }
 
-.pdf-files .box:hover {
-  transform: translateY(-8px);
-}
-
 .pdf-files .box {
   width: 30%;
   background-color: var(--main-color);
   border-radius: 10px;
   text-align: center;
-  transition: 1s;
+  transition: 0.5s;
   padding-top: 14px;
   filter: drop-shadow(2px 4px 4px black);
+  position: relative;
+}
+.pdf-files .box:hover {
+  transform: translateY(-8px);
+  background-color: #5da87a;
+  transition: 1s;
+}
+.pdf-files:has(.box:hover) .box:not(:hover) {
+  background-color: var(--main-color);
+}
+.pdf-files:has(.box:hover) .box:not(:hover)::after {
+  display: none;
+}
+.pdf-files .box::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(50%);
+  top: 103%;
+  width: 0;
+  height: 2px;
+  background-color: black;
+  transition: 0.3s ease;
+}
+.pdf-files:has(.box:hover) .box::after {
+  content: "";
+  position: absolute;
+  left: -50%;
+  transform: translateX(50%);
+  top: 103%;
+  width: 100%;
+  height: 2px;
+  background-color: black;
 }
 
 @media (max-width: 767px) {
   .pdf-files {
     flex-direction: column;
+    gap: 50px;
   }
 
   .pdf-files .box {
@@ -330,10 +406,6 @@ body:has(.box:hover) .spans-n {
   color: black;
   transform: scale(1.2);
 }
-.pdf-files:has(.box:hover) .box:not(:hover) {
-  filter: blur(10px);
-  background-color: black;
-}
 
 /* end section of PDFs */
 .motivation {
@@ -345,6 +417,7 @@ body:has(.box:hover) .spans-n {
   letter-spacing: 3.8px;
   font-weight: bold;
   animation: motivation 1s linear infinite alternate;
+  font-family: "eng";
 }
 
 @keyframes motivation {
@@ -536,6 +609,14 @@ form .textarea {
 form .textarea textarea {
   width: 100%;
   padding: 10px;
+  transition: 0.4s;
+  border: 8px double #000000;
+  border-color: rgb(0, 0, 0);
+}
+
+form .textarea textarea:focus {
+  border: 8px double #ff0000;
+  border-color: rgb(255, 0, 0);
 }
 form .textarea textarea::placeholder {
   text-align: center;
@@ -734,6 +815,11 @@ footer {
   background-color: var(--main-color);
   padding: 10px;
   color: white;
+  transition: 0.5s;
+  font-family: "for";
+}
+body:has(.box:hover) footer {
+  background-color: #5da87a;
 }
 @media (max-width: 767px) {
   footer {
