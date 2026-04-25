@@ -19,7 +19,7 @@
   src: url(foregore.otf);
 }
 :root {
-  --main-color: #ff0000;
+  --main-color: #00eaff;
   --ar1: "zain.ttf";
   --eng1: "aman.otf";
   --eng12: "eng.otf";
@@ -70,7 +70,7 @@ header::after {
   position: absolute;
   padding: 10px;
   background-color: black;
-  color: wheat;
+  color: rgb(255, 0, 132);
   width: fit-content;
   height: fit-content;
   left: 50%;
@@ -80,7 +80,7 @@ header::after {
   font-family: "zain";
 }
 body:has(.box:hover) header {
-  background-color: #5da87a;
+  background-color: #00ff1a;
 }
 @media (max-width: 767px) {
   header {
@@ -152,7 +152,7 @@ header .container::after {
 header .container .logo {
   display: inline;
   animation: for-logo 1s linear alternate-reverse infinite;
-  color: white;
+  color: black;
 }
 @keyframes for-logo {
   50% {
@@ -163,7 +163,7 @@ header .container .logo {
   }
 }
 header .container .logo:hover {
-  color: black;
+  color: rgb(255, 255, 255);
 }
 
 header .container ul {
@@ -174,18 +174,41 @@ header .container ul {
 header .container ul li {
   padding: 10px;
   transition: 0.3s;
-  color: white;
+  color: black;
   font-size: 14px;
 }
 header .container ul li:hover {
-  color: black;
+  color: rgb(255, 255, 255);
   transform: scale(1.2);
 }
 .headA {
   font-family: "zain";
 }
 /* end header */
+.tele {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  margin: 30px 0;
+}
+.tele .gram {
+  padding: 20px;
+  background-color: #00ff00;
+  color: #ffffff;
+  border-radius: 45px;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+}
+.tele .gram a {
+  font-family: "zain";
+  transition: 1s;
+}
 
+.tele .gram a:hover {
+  color: #000000;
+}
 /* start section of PDFs */
 .special-heading {
   text-align: center;
@@ -197,7 +220,7 @@ header .container ul li:hover {
   transition: 0.5s;
 }
 body:has(.box:hover) .special-heading {
-  color: #5da87a;
+  color: #00ff04;
 }
 @media (max-width: 380px) {
   .special-heading {
@@ -331,7 +354,7 @@ body:has(.box:hover) .spans-n {
 }
 .pdf-files .box:hover {
   transform: translateY(-8px);
-  background-color: #5da87a;
+  background-color: #1aff00;
   transition: 1s;
 }
 .pdf-files:has(.box:hover) .box:not(:hover) {
@@ -397,7 +420,7 @@ body:has(.box:hover) .spans-n {
 }
 .btns .btn1,
 .btns .btn2 {
-  color: white;
+  color: black;
   transition: 0.3s;
 }
 
@@ -439,7 +462,7 @@ body:has(.box:hover) .spans-n {
 .div2 {
   display: none;
   background-color: var(--main-color);
-  color: white;
+  color: black;
   padding: 10px;
 }
 @media (min-width: 200px) and (max-width: 300px) {
@@ -450,7 +473,7 @@ body:has(.box:hover) .spans-n {
 .div3 {
   display: none;
   background-color: var(--main-color);
-  color: white;
+  color: black;
   padding: 10px;
 }
 @media (min-width: 301px) and (max-width: 400px) {
@@ -461,7 +484,7 @@ body:has(.box:hover) .spans-n {
 .div4 {
   display: none;
   background-color: var(--main-color);
-  color: white;
+  color: black;
   padding: 10px;
 }
 @media (min-width: 401px) and (max-width: 500px) {
@@ -472,7 +495,7 @@ body:has(.box:hover) .spans-n {
 .div5 {
   display: none;
   background-color: var(--main-color);
-  color: white;
+  color: black;
   padding: 10px;
 }
 @media (min-width: 501px) and (max-width: 600px) {
@@ -483,7 +506,7 @@ body:has(.box:hover) .spans-n {
 .div6 {
   display: none;
   background-color: var(--main-color);
-  color: white;
+  color: black;
   padding: 10px;
 }
 @media (min-width: 601px) and (max-width: 700px) {
@@ -814,12 +837,12 @@ footer {
   text-transform: capitalize;
   background-color: var(--main-color);
   padding: 10px;
-  color: white;
+  color: black;
   transition: 0.5s;
   font-family: "for";
 }
 body:has(.box:hover) footer {
-  background-color: #5da87a;
+  background-color: #00ff00;
 }
 @media (max-width: 767px) {
   footer {
