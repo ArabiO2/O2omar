@@ -857,3 +857,7 @@ body:has(.box:hover) footer {
   display:flex ;
   justify-content: center;
 }
+.input-area {
+  display:flex ;
+  justify-content:center;
+}
