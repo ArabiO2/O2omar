@@ -862,7 +862,7 @@ body:has(.box:hover) footer {
   display:flex ;
   justify-content:center;
 }
-.chat-box. .input-area .btn {
+.chat-container .input-area .btn {
   position:relative;
   padding:10px ;
   border : none ; 
@@ -873,10 +873,10 @@ body:has(.box:hover) footer {
   margin : 5px ; 
 
 }
-.chat-box. .input-area .btn:hover {
+.chat-container  .input-area .btn:hover {
   background-color : blue 
 }
-.chat-box  .input-area. btn:after {
+.chat-container  .input-area. btn:after {
   content:""
   position : absolute ; 
   left : 50% ; 
