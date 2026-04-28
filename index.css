@@ -849,3 +849,11 @@ body:has(.box:hover) footer {
     font-size: 14px;
   }
 }
+.chat-container {
+  background-color: #00ff00;
+  color: #ffffff;
+}
+.chat-box {
+  display:flex ;
+  justify-content: center;
+}

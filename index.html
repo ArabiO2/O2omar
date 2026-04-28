@@ -130,14 +130,8 @@
     </form>
 
 <div class="chat-container">
-    <div id="chat-box" style="height: 300px; border: 1px solid #ccc; overflow-y: auto; margin-bottom: 10px; padding: 10px; background: #f9f9f9;">
+    <div id="chat-box" class="chat-box" style="height: 300px; border: 1px solid #ccc; overflow-y: auto; margin-bottom: 10px; padding: 10px; background: #00ff00;">
         </div>
-
-    <div class="input-area">
-        <input type="text" id="message-input" placeholder="اكتب رسالتك هنا...">
-        <button id="send-btn">إرسال</button>
-    </div>
-</div>
 
     <div class="input-area">
         <input type="text" id="message-input" placeholder="اكتب رسالتك هنا...">
@@ -150,15 +144,6 @@
       &starf; &blacktriangleleft;
     </footer>
 
-     /* const firebaseConfig = {
-  apiKey: "AIzaSyC_E_kKpHr6w3Vo3GbmoSq8AYR8vUGsXo8",
-  authDomain: "o2omar-ed97b.firebaseapp.com",
-  databaseURL: "https://o2omar-ed97b-default-rtdb.firebaseio.com",
-  projectId: "o2omar-ed97b",
-  storageBucket: "o2omar-ed97b.firebasestorage.app",
-  messagingSenderId: "196235814426",
-  appId: "1:196235814426:web:747743fb40c6c8a5de93a3"
-};*/
       <script type="module">
   // 1. استدعاء المكتبات (سيبها زي ما هي)
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -201,8 +186,6 @@
     chatBox.appendChild(msgDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
   });
-
-
     </script>
   </body>
 </html>
