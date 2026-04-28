@@ -852,6 +852,7 @@ body:has(.box:hover) footer {
 .chat-container {
   background-color: #00ff00;
   color: #ffffff;
+  font-family:"zain"
 }
 .chat-box {
   display:flex ;
@@ -861,3 +862,30 @@ body:has(.box:hover) footer {
   display:flex ;
   justify-content:center;
 }
+.chat-box. .input-area .btn {
+  position:relative;
+  padding:10px ;
+  border : none ; 
+  background-color: black ; 
+  color : white; 
+  border-radius : 4px ;
+  cursor: pointer ;
+  margin : 5px ; 
+
+}
+.chat-box. .input-area .btn:hover {
+  background-color : blue 
+}
+.chat-box  .input-area. btn:after {
+  content:""
+  position : absolute ; 
+  left : 50% ; 
+  transform: translatex(50%);
+  top : 103% ; 
+  width : 0 ; 
+  height : 2px ; 
+  background-color: black; 
+  transition: 0.3s ease ; 
+
+}
+
