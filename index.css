@@ -857,10 +857,12 @@ body:has(.box:hover) footer {
 .chat-box {
   display:flex ;
   justify-content: center;
+  font-family: "zain";
 }
 .input-area {
   display:flex ;
   justify-content:center;
+  font-family: "zain";
 }
 .chat-container .input-area .btn {
   position:relative;
@@ -871,6 +873,7 @@ body:has(.box:hover) footer {
   border-radius : 4px ;
   cursor: pointer ;
   margin : 5px ; 
+  font-family: "zain";
 
 }
 .chat-container  .input-area .btn:hover {
