@@ -858,12 +858,17 @@ body:has(.box:hover) footer {
   display:flex ;
   justify-content: center;
   font-family: "zain";
+  color : black; 
 }
 .input-area {
   display:flex ;
   justify-content:center;
   font-family: "zain";
 }
+ .chat-container  .input-area  .text {
+  margin : 5px ; 
+
+ }
 .chat-container .input-area .btn {
   position:relative;
   padding:10px ;
