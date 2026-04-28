@@ -132,5 +132,60 @@
       &blacktriangleright; my regards , OMAR &copy; All rights reserved &reg;
       &starf; &blacktriangleleft;
     </footer>
+    <script>
+     /* const firebaseConfig = {
+  apiKey: "AIzaSyC_E_kKpHr6w3Vo3GbmoSq8AYR8vUGsXo8",
+  authDomain: "o2omar-ed97b.firebaseapp.com",
+  databaseURL: "https://o2omar-ed97b-default-rtdb.firebaseio.com",
+  projectId: "o2omar-ed97b",
+  storageBucket: "o2omar-ed97b.firebasestorage.app",
+  messagingSenderId: "196235814426",
+  appId: "1:196235814426:web:747743fb40c6c8a5de93a3"
+};*/
+      <script type="module">
+  // 1. استدعاء المكتبات (سيبها زي ما هي)
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+  // 2. هنا بقى تحط الأكواد اللي طلعتلك بالظبط
+  const firebaseConfig = {
+    apiKey: "AIzaSyC_E_kKpHr6w3Vo3GbmoSq8AYR8vUGsXo8",
+    authDomain: "o2omar-ed97b.firebaseapp.com",
+    databaseURL: "https://o2omar-ed97b-default-rtdb.firebaseio.com", // الرابط اللي كان في الصورة اللي فاتت
+    projectId: "o2omar-ed97b",
+    storageBucket: "o2omar-ed97b.appspot.com",
+    messagingSenderId: "196235814426",
+    appId: "1:196235814426:web:747743fb40c6c8a5de93a3"
+  };
+
+  // 3. تشغيل الربط (سيب الكود ده زي ما هو عشان يشتغل)
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const messagesRef = ref(db, "messages");
+
+  // زرار الإرسال
+  document.getElementById("send-btn").onclick = () => {
+    const input = document.getElementById("message-input");
+    if (input.value.trim() !== "") {
+      push(messagesRef, {
+        text: input.value,
+        timestamp: Date.now()
+      });
+      input.value = ""; // بيفضي الخانة بعد الإرسال
+    }
+  };
+
+  // استقبال الرسايل
+  onChildAdded(messagesRef, (data) => {
+    const chatBox = document.getElementById("chat-box");
+    const msgDiv = document.createElement("div");
+    msgDiv.classList.add("message");
+    msgDiv.textContent = data.val().text;
+    chatBox.appendChild(msgDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  });
+</script>
+
+    </script>
   </body>
 </html>
