@@ -866,8 +866,12 @@ body:has(.box:hover) footer {
   font-family: "zain";
 }
  .chat-container .input-area  .text {
-  margin : 5px ; 
+  margin : 10px ; 
   font-family: "zain";
+ }
+
+ .chat-container .input-area  .text::placeholder {
+   font-family: "zain";
  }
 
 .chat-container .input-area button {
