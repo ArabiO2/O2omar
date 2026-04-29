@@ -907,24 +907,28 @@ body:has(.box:hover) footer {
   height: 2px ; 
   background-color : black; 
 }
-.chat-container .input-area  .btn::before {
-  content : "" ; 
-  position:absolute ; 
+
+.chat-container  .input-area. btn:before {
+  content:""
+  position : absolute ; 
   left : 50% ; 
-  transform: translatex(50%) ; 
+  transform: translatex(50%);
   bottom : 103% ; 
-  width: 0;
+  width : 0 ; 
   height : 2px ; 
-  background-color: #000000;
-  transition: 0.3s ease ;
+  background-color: black; 
+  transition: 0.3s ease ; 
+
 }
-.chat-container  .input-area:has(.btn:hover)  .btn:before {
-  content:""  ;
-  position:absolute ; 
+
+.chat-container .input-area:has(.btn:hover) .btn:before {
+  content: "";
+  position: absolute ;
   left : -50% ; 
   transform: translatex(50%) ; 
-  bottom: 103% ; 
+  bottom  : 103% ; 
   width : 100% ; 
   height: 2px ; 
-  background-color: #000000;
+  background-color : black; 
 }
+
