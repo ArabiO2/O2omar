@@ -870,32 +870,9 @@ body:has(.box:hover) footer {
   font-family: "zain";
  }
 
- .chat-container .input-area  .text::placeholder {
+ .chat-container  .text:placeholder {
    font-family: "zain";
  }
-
-.chat-container .input-area button {
-  position: relative;
-  padding: 10px;
-  margin: 5px;
-  border: none;
-  background-color: black;
-  color: wheat;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: "zain";
-}
-.chat-container .input-area  button::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(50%);
-  top: 103%;
-  width: 0;
-  height: 2px;
-  background-color: black;
-  transition: 0.3s ease;
-}
 .chat-container .input-area .btn {
   position: relative;
   padding: 10px;
@@ -904,6 +881,8 @@ body:has(.box:hover) footer {
   color: wheat;
   border-radius: 4px;
   font-family: "zain";
+  cursor: pointer; 
+  margin: 5px 
 }
 .chat-container .input-area .btn:hover {
   background-color: blue;
