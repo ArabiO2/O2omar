@@ -144,7 +144,7 @@
     </footer>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+  import { getDatabase, ref, push, onChildAdded, remove, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
   // 1. حط بياناتك هنا (الـ Config بتاعك)
   const firebaseConfig = {
@@ -203,6 +203,14 @@
     }
 
     msgDiv.id = msgId;
+// الكود ده بيراقب لو أي رسالة اتمسحت من السيرفر، يشيلها فوراً من شاشة كل المستخدمين
+onChildRemoved(messagesRef, (data) => {
+    const msgId = data.key; // بنعرف الـ ID بتاع الرسالة اللي اتمسحت
+    const element = document.getElementById(msgId); // بندور عليها في الصفحة
+    if (element) {
+        element.remove(); // بنشيلها من الـ HTML فوراً
+    }
+});
 
     // زرار المسح يظهر للأدمن فقط
     let deleteBtn = "";
