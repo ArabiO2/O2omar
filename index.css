@@ -867,7 +867,7 @@ body:has(.box:hover) footer {
 }
  .chat-container .input-area  .text {
   margin : 5px ; 
-
+  font-family: "zain";
  }
 
 .chat-container .input-area button {
@@ -879,6 +879,7 @@ body:has(.box:hover) footer {
   color: wheat;
   border-radius: 4px;
   cursor: pointer;
+  font-family: "zain";
 }
 .chat-container .input-area  button::after {
   content: "";
@@ -898,6 +899,7 @@ body:has(.box:hover) footer {
   background-color: black;
   color: wheat;
   border-radius: 4px;
+  font-family: "zain";
 }
 .chat-container .input-area .btn:hover {
   background-color: blue;
