@@ -194,6 +194,14 @@
 
     const msgDiv = document.createElement("div");
     msgDiv.classList.add("message");
+// الكود ده بيراقب لو أي رسالة اتمسحت من السيرفر، يشيلها فوراً من شاشة كل المستخدمين
+onChildRemoved(messagesRef, (data) => {
+    const msgId = data.key; // بنعرف الـ ID بتاع الرسالة اللي اتمسحت
+    const element = document.getElementById(msgId); // بندور عليها في الصفحة
+    if (element) {
+        element.remove(); // بنشيلها من الـ HTML فوراً
+    }
+});
 
     // يمين (others) ولا شمال (my-message)
     if (msgData.senderId === myId) {
@@ -203,14 +211,7 @@
     }
 
     msgDiv.id = msgId;
-// الكود ده بيراقب لو أي رسالة اتمسحت من السيرفر، يشيلها فوراً من شاشة كل المستخدمين
-onChildRemoved(messagesRef, (data) => {
-    const msgId = data.key; // بنعرف الـ ID بتاع الرسالة اللي اتمسحت
-    const element = document.getElementById(msgId); // بندور عليها في الصفحة
-    if (element) {
-        element.remove(); // بنشيلها من الـ HTML فوراً
-    }
-});
+
 
     // زرار المسح يظهر للأدمن فقط
     let deleteBtn = "";
