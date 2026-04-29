@@ -142,27 +142,31 @@
       &blacktriangleright; my regards , OMAR &copy; All rights reserved &reg;
       &starf; &blacktriangleleft;
     </footer>
-
-      <script type="module">
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  // 1. ضع بياناتك هنا
+  // 1. حط بياناتك هنا (الـ Config بتاعك)
   const firebaseConfig = {
-      apiKey: "AIzaSyC_E_kKpHr6w3Vo3GbmoSq8AYR8vUGsXo8",
+    apiKey: "YOUR_API_KEY",
     authDomain: "o2omar-ed97b.firebaseapp.com",
-    databaseURL: "https://o2omar-ed97b-default-rtdb.firebaseio.com", // الرابط اللي كان في الصورة اللي فاتت
+    databaseURL: "https://o2omar-ed97b-default-rtdb.firebaseio.com",
     projectId: "o2omar-ed97b",
     storageBucket: "o2omar-ed97b.appspot.com",
-    messagingSenderId: "196235814426",
-    appId: "1:196235814426:web:747743fb40c6c8a5de93a3"
+    messagingSenderId: "YOUR_ID",
+    appId: "YOUR_APP_ID"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const messagesRef = ref(db, "messages");
 
-  // 2. تمييز المستخدم (عشان يعرف مين "أنا")
+  // 2. تفعيل الأدمن (سيب السطر ده موجود وافتح الصفحة، وبعد ما يشتغل ممكن تمسحه لو مش عايز حد غيرك يفعله)
+  localStorage.setItem("adminKey", "omar_admin_77"); 
+
+  const isAdmin = localStorage.getItem("adminKey") === "omar_admin_77";
+  
+  // معرف المستخدم العادي (عشان اليمين والشمال)
   if (!localStorage.getItem("userId")) {
       localStorage.setItem("userId", "user_" + Math.random().toString(36).substr(2, 9));
   }
@@ -173,18 +177,16 @@
     const input = document.getElementById("message-input");
     if (input.value.trim() !== "") {
       push(messagesRef, {
-        senderId: myId, // بنبعت الـ ID بتاعنا مع الرسالة
+        senderId: myId,
         text: input.value,
         time: Date.now()
       });
       input.value = "";
     }
   };
-
-  // ربط زرار الإرسال بالدالة
   document.getElementById("send-btn").onclick = sendMessage;
 
-  // 4. استقبال وعرض الرسائل
+  // 4. عرض الرسائل
   onChildAdded(messagesRef, (data) => {
     const chatBox = document.getElementById("chat-box");
     const msgData = data.val();
@@ -193,31 +195,40 @@
     const msgDiv = document.createElement("div");
     msgDiv.classList.add("message");
 
-    // فحص: هل الرسالة دي بتاعتي ولا بتاعت حد تاني؟
+    // يمين (others) ولا شمال (my-message)
     if (msgData.senderId === myId) {
-        msgDiv.classList.add("my-message"); // تروح شمال وتتلون أزرق
+        msgDiv.classList.add("my-message");
     } else {
-        msgDiv.classList.add("others-message"); // تروح يمين وتكون بيضاء
+        msgDiv.classList.add("others-message");
     }
 
     msgDiv.id = msgId;
+
+    // زرار المسح يظهر للأدمن فقط
+    let deleteBtn = "";
+    if (isAdmin) {
+        deleteBtn = `<button class="delete-btn" onclick="deleteMessage('${msgId}')" style="margin-right:10px; color:red; border:none; background:none; cursor:pointer; font-weight:bold;">[مسح]</button>`;
+    }
+
     msgDiv.innerHTML = `
         <span>${msgData.text}</span>
-        <button class="delete-btn" onclick="deleteMessage('${msgId}')">X</button>
+        ${deleteBtn}
     `;
 
     chatBox.appendChild(msgDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
   });
 
-  // 5. وظيفة المسح
+  // 5. وظيفة المسح (للأدمن)
   window.deleteMessage = function(id) {
-    if (confirm("تمسح الرسالة؟")) {
+    if (confirm("هل تريد مسح هذه الرسالة نهائياً؟")) {
         remove(ref(db, "messages/" + id));
-        document.getElementById(id).remove();
+        const element = document.getElementById(id);
+        if(element) element.remove();
     }
   };
 </script>
 
+       
   </body>
 </html>
