@@ -144,13 +144,12 @@
     </footer>
 
       <script type="module">
-  // 1. استدعاء المكتبات (سيبها زي ما هي)
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+  import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  // 2. هنا بقى تحط الأكواد اللي طلعتلك بالظبط
+  // 1. ضع بياناتك هنا
   const firebaseConfig = {
-    apiKey: "AIzaSyC_E_kKpHr6w3Vo3GbmoSq8AYR8vUGsXo8",
+      apiKey: "AIzaSyC_E_kKpHr6w3Vo3GbmoSq8AYR8vUGsXo8",
     authDomain: "o2omar-ed97b.firebaseapp.com",
     databaseURL: "https://o2omar-ed97b-default-rtdb.firebaseio.com", // الرابط اللي كان في الصورة اللي فاتت
     projectId: "o2omar-ed97b",
@@ -159,32 +158,66 @@
     appId: "1:196235814426:web:747743fb40c6c8a5de93a3"
   };
 
-  // 3. تشغيل الربط (سيب الكود ده زي ما هو عشان يشتغل)
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const messagesRef = ref(db, "messages");
 
-  // زرار الإرسال
-  document.getElementById("send-btn").onclick = () => {
+  // 2. تمييز المستخدم (عشان يعرف مين "أنا")
+  if (!localStorage.getItem("userId")) {
+      localStorage.setItem("userId", "user_" + Math.random().toString(36).substr(2, 9));
+  }
+  const myId = localStorage.getItem("userId");
+
+  // 3. وظيفة الإرسال
+  window.sendMessage = function() {
     const input = document.getElementById("message-input");
     if (input.value.trim() !== "") {
       push(messagesRef, {
+        senderId: myId, // بنبعت الـ ID بتاعنا مع الرسالة
         text: input.value,
-        timestamp: Date.now()
+        time: Date.now()
       });
-      input.value = ""; // بيفضي الخانة بعد الإرسال
+      input.value = "";
     }
   };
 
-  // استقبال الرسايل
+  // ربط زرار الإرسال بالدالة
+  document.getElementById("send-btn").onclick = sendMessage;
+
+  // 4. استقبال وعرض الرسائل
   onChildAdded(messagesRef, (data) => {
     const chatBox = document.getElementById("chat-box");
+    const msgData = data.val();
+    const msgId = data.key;
+
     const msgDiv = document.createElement("div");
     msgDiv.classList.add("message");
-    msgDiv.textContent = data.val().text;
+
+    // فحص: هل الرسالة دي بتاعتي ولا بتاعت حد تاني؟
+    if (msgData.senderId === myId) {
+        msgDiv.classList.add("my-message"); // تروح شمال وتتلون أزرق
+    } else {
+        msgDiv.classList.add("others-message"); // تروح يمين وتكون بيضاء
+    }
+
+    msgDiv.id = msgId;
+    msgDiv.innerHTML = `
+        <span>${msgData.text}</span>
+        <button class="delete-btn" onclick="deleteMessage('${msgId}')">X</button>
+    `;
+
     chatBox.appendChild(msgDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
   });
-    </script>
+
+  // 5. وظيفة المسح
+  window.deleteMessage = function(id) {
+    if (confirm("تمسح الرسالة؟")) {
+        remove(ref(db, "messages/" + id));
+        document.getElementById(id).remove();
+    }
+  };
+</script>
+
   </body>
 </html>
