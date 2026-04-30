@@ -162,11 +162,14 @@
       &blacktriangleright; my regards , OMAR &copy; All rights reserved &reg;
       &starf; &blacktriangleleft;
     </footer>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getDatabase, ref, push, onChildAdded, remove, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  // 1. حط بياناتك هنا (الـ Config بتاعك)
+<script type="module">
+  // 1. استدعاء جميع المكتبات اللازمة
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded, remove, onChildRemoved, update, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  // 2. إعدادات فايربيز (استبدلها ببياناتك)
   const firebaseConfig = {
   apiKey: "AIzaSyC_E_kKpHr6w3Vo3GbmoSq8AYR8vUGsXo8",
   authDomain: "o2omar-ed97b.firebaseapp.com",
@@ -179,34 +182,80 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
+  const auth = getAuth(app);
   const messagesRef = ref(db, "messages");
 
-  // 2. تفعيل الأدمن (سيب السطر ده موجود وافتح الصفحة، وبعد ما يشتغل ممكن تمسحه لو مش عايز حد غيرك يفعله)
-   
+  // --- إعدادات الأدمن ---
+  const ADMIN_EMAIL = "o6003558@gmail.com"; // ضع إيميلك هنا
+  let currentUser = null;
 
-  const isAdmin = localStorage.getItem("adminKey") === "omar_admin_77";
-  
-  // معرف المستخدم العادي (عشان اليمين والشمال)
-  if (!localStorage.getItem("userId")) {
-      localStorage.setItem("userId", "user_" + Math.random().toString(36).substr(2, 9));
-  }
-  const myId = localStorage.getItem("userId");
+  // 3. مراقبة حالة تسجيل الدخول
+  onAuthStateChanged(auth, (user) => {
+    const adminPanel = document.getElementById("admin-panel");
+    const authContainer = document.getElementById("auth-container");
 
-  // 3. وظيفة الإرسال
+    if (user) {
+      currentUser = user;
+      console.log("Logged in as:", user.email);
+      authContainer.style.display = "none"; // إخفاء فورم الدخول بعد النجاح
+      
+      if (user.email === ADMIN_EMAIL) {
+        adminPanel.style.display = "block"; // إظهار لوحة الأدمن
+        loadUsersList();
+      }
+    } else {
+      currentUser = null;
+      adminPanel.style.display = "none";
+      authContainer.style.display = "block";
+    }
+  });
+
+  // 4. وظائف الحسابات (تسجيل وإنشاء)
+  window.signup = function() {
+    const email = document.getElementById("email-input").value;
+    const pass = document.getElementById("password-input").value;
+    createUserWithEmailAndPassword(auth, email, pass)
+      .then((userCredential) => {
+        // إنشاء ملف لليوزر في قاعدة البيانات عند التسجيل أول مرة
+        set(ref(db, 'users/' + userCredential.user.uid), {
+          email: email,
+          role: "user",
+          features: { vip: false }
+        });
+        alert("تم إنشاء الحساب!");
+      })
+      .catch((err) => alert(err.message));
+  };
+
+  window.login = function() {
+    const email = document.getElementById("email-input").value;
+    const pass = document.getElementById("password-input").value;
+    signInWithEmailAndPassword(auth, email, pass)
+      .catch((err) => alert("خطأ في البيانات: " + err.message));
+  };
+
+  // ربط الزراير بالوظائف
+  document.getElementById("signup-btn").onclick = signup;
+  document.getElementById("login-btn").onclick = login;
+
+  // 5. نظام المحادثة (Chat)
   window.sendMessage = function() {
     const input = document.getElementById("message-input");
-    if (input.value.trim() !== "") {
+    if (input.value.trim() !== "" && currentUser) {
       push(messagesRef, {
-        senderId: myId,
+        senderId: currentUser.uid,
+        senderEmail: currentUser.email,
         text: input.value,
         time: Date.now()
       });
       input.value = "";
+    } else if (!currentUser) {
+      alert("سجل دخول أولاً لإرسال رسائل!");
     }
   };
   document.getElementById("send-btn").onclick = sendMessage;
 
-  // 4. عرض الرسائل
+  // عرض الرسايل
   onChildAdded(messagesRef, (data) => {
     const chatBox = document.getElementById("chat-box");
     const msgData = data.val();
@@ -214,175 +263,64 @@
 
     const msgDiv = document.createElement("div");
     msgDiv.classList.add("message");
-// الكود ده بيراقب لو أي رسالة اتمسحت من السيرفر، يشيلها فوراً من شاشة كل المستخدمين
-onChildRemoved(messagesRef, (data) => {
-    const msgId = data.key; // بنعرف الـ ID بتاع الرسالة اللي اتمسحت
-    const element = document.getElementById(msgId); // بندور عليها في الصفحة
-    if (element) {
-        element.remove(); // بنشيلها من الـ HTML فوراً
-    }
-});
-
-    // يمين (others) ولا شمال (my-message)
-    if (msgData.senderId === myId) {
-        msgDiv.classList.add("my-message");
-    } else {
-        msgDiv.classList.add("others-message");
-    }
-
     msgDiv.id = msgId;
 
-
-    // زرار المسح يظهر للأدمن فقط
-    let deleteBtn = "";
-    if (isAdmin) {
-        deleteBtn = `<button class="delete-btn" onclick="deleteMessage('${msgId}')" style="margin-right:10px; color:red; border:none; background:none; cursor:pointer; font-weight:bold;">[مسح]</button>`;
+    // تمييز اليمين والشمال بناءً على الـ UID
+    if (currentUser && msgData.senderId === currentUser.uid) {
+      msgDiv.classList.add("my-message");
+    } else {
+      msgDiv.classList.add("others-message");
     }
 
-    msgDiv.innerHTML = `
-        <span>${msgData.text}</span>
-        ${deleteBtn}
-    `;
+    // زرار المسح يظهر فقط لو أنت داخل بإيميل الأدمن
+    let deleteBtn = "";
+    if (currentUser && currentUser.email === ADMIN_EMAIL) {
+      deleteBtn = `<button onclick="deleteMsg('${msgId}')" style="color:red; border:none; background:none; cursor:pointer; font-size:10px;">[X]</button>`;
+    }
 
+    msgDiv.innerHTML = `<span>${msgData.text}</span> ${deleteBtn}`;
     chatBox.appendChild(msgDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
   });
 
-  // 5. وظيفة المسح (للأدمن)
-  window.deleteMessage = function(id) {
-    if (confirm("هل تريد مسح هذه الرسالة نهائياً؟")) {
-        remove(ref(db, "messages/" + id));
-        const element = document.getElementById(id);
-        if(element) element.remove();
-    }
+  // حذف الرسالة من عند الكل (Real-time)
+  window.deleteMsg = function(id) {
+    if(confirm("مسح الرسالة؟")) remove(ref(db, "messages/" + id));
   };
 
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  onChildRemoved(messagesRef, (data) => {
+    const el = document.getElementById(data.key);
+    if(el) el.remove();
+  });
 
-  // حط الـ Config بتاعك هنا
-  const firebaseConfig = { /* بياناتك هنا */ };
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  const auth = getAuth(app); // تشغيل نظام الحسابات
+  // 6. وظائف لوحة التحكم (Admin)
+  function loadUsersList() {
+    onValue(ref(db, 'users'), (snapshot) => {
+      const list = document.getElementById("users-list");
+      list.innerHTML = "";
+      snapshot.forEach((child) => {
+        const userData = child.val();
+        const uid = child.key;
+        if(userData.email === ADMIN_EMAIL) return;
 
-  const emailInput = document.getElementById("email-input");
-  const passwordInput = document.getElementById("password-input");
-  const authMsg = document.getElementById("auth-msg");
-
-  // 2. وظيفة إنشاء حساب جديد
-  document.getElementById("signup-btn").onclick = () => {
-    createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        authMsg.style.color = "green";
-        authMsg.textContent = "تم إنشاء الحساب بنجاح! جاري تسجيل الدخول...";
-        
-        // هنا بنعمل "ملف" للمستخدم في قاعدة البيانات عشان الأدمن يتحكم فيه بعدين
-        set(ref(db, 'users/' + user.uid), {
-            email: user.email,
-            role: "user", // أي حد بيسجل بيبقى user عادي
-            features: {
-                vip: false,
-                canChat: true
-            }
-        });
-      })
-      .catch((error) => {
-        authMsg.style.color = "red";
-        authMsg.textContent = "خطأ: " + error.message;
+        const isVip = userData.features?.vip || false;
+        const div = document.createElement("div");
+        div.style = "padding:10px; border-bottom:1px solid #ddd; background:#fff; margin-bottom:5px;";
+        div.innerHTML = `
+          <p>${userData.email}</p>
+          <button onclick="toggleVip('${uid}', ${isVip})" style="background:${isVip ? 'red' : 'green'}; color:white;">
+            ${isVip ? 'إلغاء VIP' : 'تفعيل VIP'}
+          </button>
+        `;
+        list.appendChild(div);
       });
-  };
-
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-  // 3. وظيفة تسجيل الدخول
-  document.getElementById("login-btn").onclick = () => {
-    signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        authMsg.style.color = "green";
-        authMsg.textContent = "تم الدخول بنجاح! أهلاً: " + user.email;
-        // هنا ممكن تخفي الفورمة وتظهر الشات مثلاً
-      })
-      .catch((error) => {
-        authMsg.style.color = "red";
-        authMsg.textContent = "خطأ في الإيميل أو الباسورد!";
-      });
-  };
-  // حط إيميلك أنت هنا (ده الإيميل اللي هتبقى أدمن بيه)
-const ADMIN_EMAIL = "o6003558@gmail.com"; 
-
-// تعديل وظيفة تسجيل الدخول
-document.getElementById("login-btn").onclick = () => {
-    signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        authMsg.style.color = "green";
-        authMsg.textContent = "تم الدخول بنجاح! أهلاً: " + user.email;
-        
-        // --- الجزء الجديد بتاع الأدمن ---
-        if (user.email === ADMIN_EMAIL) {
-            document.getElementById("admin-panel").style.display = "block"; // إظهار اللوحة
-            loadUsers(); // استدعاء دالة جلب المستخدمين
-        } else {
-            document.getElementById("admin-panel").style.display = "none"; // إخفاء اللوحة لو مستخدم عادي
-        }
-      })
-      .catch((error) => {
-        authMsg.style.color = "red";
-        authMsg.textContent = "خطأ في الإيميل أو الباسورد!";
-      });
-};
-// وظيفة جلب المستخدمين من قاعدة البيانات
-function loadUsers() {
-    const usersRef = ref(db, 'users');
-    
-    // onValue بتجيب البيانات وتتحدث لوحدها لو حصل تغيير
-    onValue(usersRef, (snapshot) => {
-        const usersListDiv = document.getElementById("users-list");
-        usersListDiv.innerHTML = ""; // تنظيف اللوحة قبل إضافة الناس
-        
-        snapshot.forEach((childSnapshot) => {
-            const uid = childSnapshot.key;
-            const userData = childSnapshot.val();
-            
-            // عشان ميطبعش حسابك أنت معاهم (اختياري)
-            if(userData.email === ADMIN_EMAIL) return; 
-
-            // حالة الـ VIP الحالية (هل هو مفعل ولا مقفول؟)
-            const isVip = userData.features ? userData.features.vip : false;
-            
-            const userCard = document.createElement("div");
-            userCard.style = "border: 1px solid #ccc; padding: 10px; border-radius: 5px; background: white;";
-            
-            userCard.innerHTML = `
-                <div style="margin-bottom: 8px;"><strong>إيميل:</strong> <span style="font-size:14px;">${userData.email}</span></div>
-                <div style="margin-bottom: 8px;"><strong>VIP:</strong> <span style="color:${isVip ? 'green' : 'red'}; font-weight:bold;">${isVip ? 'مفعل' : 'مقفول'}</span></div>
-                
-                <button onclick="toggleVIP('${uid}', ${isVip})" style="padding: 5px 10px; background: ${isVip ? '#dc3545' : '#28a745'}; color: white; border: none; border-radius: 3px; cursor: pointer; width: 100%;">
-                    ${isVip ? 'إلغاء الـ VIP' : 'تفعيل الـ VIP'}
-                </button>
-            `;
-            
-            usersListDiv.appendChild(userCard);
-        });
     });
-}
+  }
 
-// وظيفة تفعيل/إلغاء خواص المستخدم (مربوطة بالزرار اللي جوه الكارت)
-window.toggleVIP = function(uid, currentVipStatus) {
-    const userFeaturesRef = ref(db, 'users/' + uid + '/features');
-    
-    // update بتعدل حقل معين من غير ما تمسح باقي بيانات المستخدم
-    update(userFeaturesRef, {
-        vip: !currentVipStatus // لو true يخليها false والعكس
-    });
-}
+  window.toggleVip = function(uid, currentStatus) {
+    update(ref(db, 'users/' + uid + '/features'), { vip: !currentStatus });
+  };
 
-</script>
-
-       
+</script>     
   </body>
 </html>
