@@ -149,6 +149,13 @@
     
     <p id="auth-msg" style="color: red; margin-top: 10px;"></p>
 </div>
+<div id="admin-panel" style="display: none; border: 2px solid #ff9800; padding: 20px; margin: 20px auto; max-width: 400px; border-radius: 10px; background: #fff8dc;">
+    <h3 style="color: #ff9800; text-align: center;">👑 لوحة تحكم الإدارة</h3>
+    <p style="text-align: center; font-size: 14px;">هنا تقدر تتحكم في كل المستخدمين</p>
+    
+    <div id="users-list" style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+        </div>
+</div>
 
 
     <footer>
@@ -161,14 +168,14 @@
 
   // 1. حط بياناتك هنا (الـ Config بتاعك)
   const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "o2omar-ed97b.firebaseapp.com",
-    databaseURL: "https://o2omar-ed97b-default-rtdb.firebaseio.com",
-    projectId: "o2omar-ed97b",
-    storageBucket: "o2omar-ed97b.appspot.com",
-    messagingSenderId: "YOUR_ID",
-    appId: "YOUR_APP_ID"
-  };
+  apiKey: "AIzaSyC_E_kKpHr6w3Vo3GbmoSq8AYR8vUGsXo8",
+  authDomain: "o2omar-ed97b.firebaseapp.com",
+  databaseURL: "https://o2omar-ed97b-default-rtdb.firebaseio.com",
+  projectId: "o2omar-ed97b",
+  storageBucket: "o2omar-ed97b.firebasestorage.app",
+  messagingSenderId: "196235814426",
+  appId: "1:196235814426:web:747743fb40c6c8a5de93a3"
+};
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
@@ -251,7 +258,7 @@ onChildRemoved(messagesRef, (data) => {
   };
 
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+  import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
   // حط الـ Config بتاعك هنا
@@ -288,6 +295,8 @@ onChildRemoved(messagesRef, (data) => {
       });
   };
 
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
   // 3. وظيفة تسجيل الدخول
   document.getElementById("login-btn").onclick = () => {
     signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value)
@@ -302,7 +311,76 @@ onChildRemoved(messagesRef, (data) => {
         authMsg.textContent = "خطأ في الإيميل أو الباسورد!";
       });
   };
-  
+  // حط إيميلك أنت هنا (ده الإيميل اللي هتبقى أدمن بيه)
+const ADMIN_EMAIL = "o6003558@gmail.com"; 
+
+// تعديل وظيفة تسجيل الدخول
+document.getElementById("login-btn").onclick = () => {
+    signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        authMsg.style.color = "green";
+        authMsg.textContent = "تم الدخول بنجاح! أهلاً: " + user.email;
+        
+        // --- الجزء الجديد بتاع الأدمن ---
+        if (user.email === ADMIN_EMAIL) {
+            document.getElementById("admin-panel").style.display = "block"; // إظهار اللوحة
+            loadUsers(); // استدعاء دالة جلب المستخدمين
+        } else {
+            document.getElementById("admin-panel").style.display = "none"; // إخفاء اللوحة لو مستخدم عادي
+        }
+      })
+      .catch((error) => {
+        authMsg.style.color = "red";
+        authMsg.textContent = "خطأ في الإيميل أو الباسورد!";
+      });
+};
+// وظيفة جلب المستخدمين من قاعدة البيانات
+function loadUsers() {
+    const usersRef = ref(db, 'users');
+    
+    // onValue بتجيب البيانات وتتحدث لوحدها لو حصل تغيير
+    onValue(usersRef, (snapshot) => {
+        const usersListDiv = document.getElementById("users-list");
+        usersListDiv.innerHTML = ""; // تنظيف اللوحة قبل إضافة الناس
+        
+        snapshot.forEach((childSnapshot) => {
+            const uid = childSnapshot.key;
+            const userData = childSnapshot.val();
+            
+            // عشان ميطبعش حسابك أنت معاهم (اختياري)
+            if(userData.email === ADMIN_EMAIL) return; 
+
+            // حالة الـ VIP الحالية (هل هو مفعل ولا مقفول؟)
+            const isVip = userData.features ? userData.features.vip : false;
+            
+            const userCard = document.createElement("div");
+            userCard.style = "border: 1px solid #ccc; padding: 10px; border-radius: 5px; background: white;";
+            
+            userCard.innerHTML = `
+                <div style="margin-bottom: 8px;"><strong>إيميل:</strong> <span style="font-size:14px;">${userData.email}</span></div>
+                <div style="margin-bottom: 8px;"><strong>VIP:</strong> <span style="color:${isVip ? 'green' : 'red'}; font-weight:bold;">${isVip ? 'مفعل' : 'مقفول'}</span></div>
+                
+                <button onclick="toggleVIP('${uid}', ${isVip})" style="padding: 5px 10px; background: ${isVip ? '#dc3545' : '#28a745'}; color: white; border: none; border-radius: 3px; cursor: pointer; width: 100%;">
+                    ${isVip ? 'إلغاء الـ VIP' : 'تفعيل الـ VIP'}
+                </button>
+            `;
+            
+            usersListDiv.appendChild(userCard);
+        });
+    });
+}
+
+// وظيفة تفعيل/إلغاء خواص المستخدم (مربوطة بالزرار اللي جوه الكارت)
+window.toggleVIP = function(uid, currentVipStatus) {
+    const userFeaturesRef = ref(db, 'users/' + uid + '/features');
+    
+    // update بتعدل حقل معين من غير ما تمسح باقي بيانات المستخدم
+    update(userFeaturesRef, {
+        vip: !currentVipStatus // لو true يخليها false والعكس
+    });
+}
+
 </script>
 
        
