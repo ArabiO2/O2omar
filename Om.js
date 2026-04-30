@@ -5,20 +5,20 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, on
 
 // 2. إعدادات فايربيز (حط بياناتك هنا)
 const firebaseConfig = {
-    apiKey: "AIzaSy...",
-    authDomain: "o2omar-ed97b.firebaseapp.com",
-    databaseURL: "https://o2omar-ed97b-default-rtdb.firebaseio.com",
-    projectId: "o2omar-ed97b",
-    storageBucket: "o2omar-ed97b.appspot.com",
-    messagingSenderId: "...",
-    appId: "..."
+  apiKey: "AIzaSyC_E_kKpHr6w3Vo3GbmoSq8AYR8vUGsXo8",
+  authDomain: "o2omar-ed97b.firebaseapp.com",
+  databaseURL: "https://o2omar-ed97b-default-rtdb.firebaseio.com",
+  projectId: "o2omar-ed97b",
+  storageBucket: "o2omar-ed97b.firebasestorage.app",
+  messagingSenderId: "196235814426",
+  appId: "1:196235814426:web:747743fb40c6c8a5de93a3"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 
-const ADMIN_EMAIL = "omar@example.com"; // إيميلك الأدمن
+const ADMIN_EMAIL = "o6003558@gmail.com"; // إيميلك الأدمن
 let currentUser = null;
 
 // 3. مراقبة حالة المستخدم
