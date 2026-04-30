@@ -165,8 +165,22 @@
     </footer>
 
 
-  
- <script type="module" src="script.js"></script>
 
+    <div id="auth-container">
+        <h2>تسجيل الدخول</h2>
+        <input type="email" id="email-input" placeholder="الإيميل">
+        <input type="password" id="password-input" placeholder="كلمة المرور">
+        <button id="login-btn">دخول</button>
+        <button id="signup-btn">إنشاء حساب</button>
+    </div>
+
+    <div id="chat-container" style="display: none;">
+        <button id="logout-btn">تسجيل الخروج 🚪</button>
+        <div id="chat-box" style="height: 300px; border: 1px solid #ccc; overflow-y: auto; margin: 10px 0; padding: 10px;"></div>
+        <input type="text" id="message-input" placeholder="اكتب رسالة...">
+        <button id="send-btn">إرسال</button>
+    </div>
+
+    <script type="module" src="script.js"></script>
   </body>
 </html>
