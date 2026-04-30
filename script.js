@@ -7,13 +7,13 @@ console.log("✅ ملف script.js اشتغل بنجاح!");
 
 // 2. إعدادات فايربيز (تأكد من بياناتك هنا)
 const firebaseConfig = {
-    apiKey: "ضع_هنا_مفتاحك",
-    authDomain: "o2omar-ed97b.firebaseapp.com",
-    databaseURL: "https://o2omar-ed97b-default-rtdb.firebaseio.com",
-    projectId: "o2omar-ed97b",
-    storageBucket: "o2omar-ed97b.appspot.com",
-    messagingSenderId: "77777777",
-    appId: "1:77777:web:7777"
+  apiKey: "AIzaSyC_E_kKpHr6w3Vo3GbmoSq8AYR8vUGsXo8",
+  authDomain: "o2omar-ed97b.firebaseapp.com",
+  databaseURL: "https://o2omar-ed97b-default-rtdb.firebaseio.com",
+  projectId: "o2omar-ed97b",
+  storageBucket: "o2omar-ed97b.firebasestorage.app",
+  messagingSenderId: "196235814426",
+  appId: "1:196235814426:web:747743fb40c6c8a5de93a3"
 };
 
 const app = initializeApp(firebaseConfig);
