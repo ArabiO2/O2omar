@@ -20,6 +20,28 @@
     <meta property="og:type" content="website" />
     <link rel="shortcut icon" href="reallogo.png" type="image/x-icon" />
     <link rel="shortcut icon" href="reallogo.png" type="image/x-icon" />
+    <style>
+        :root { --primary: #0084ff; --admin: #ff9800; --danger: #ff4d4d; --bg: #f0f2f5; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; margin: 0; }
+        .app-container { width: 100%; max-width: 500px; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        /* واجهة الدخول */
+        .auth-box input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; margin-top: 5px; }
+        .btn-login { background: var(--primary); color: white; }
+        .btn-signup { background: #28a745; color: white; }
+        .btn-logout { background: var(--danger); color: white; margin-bottom: 15px; }
+
+        /* واجهة الشات */
+        #chat-box { height: 350px; border: 1px solid #eee; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; background: #f9f9f9; border-radius: 10px; margin: 15px 0; }
+        .msg { padding: 10px 15px; border-radius: 18px; max-width: 80%; font-size: 14px; line-height: 1.4; position: relative; }
+        .my-msg { align-self: flex-end; background: var(--primary); color: white; border-bottom-left-radius: 2px; }
+        .other-msg { align-self: flex-start; background: #e4e6eb; color: black; border-bottom-right-radius: 2px; }
+
+        /* واجهة الأدمن */
+        #admin-panel { background: #fff3e0; border: 2px solid var(--admin); padding: 15px; border-radius: 10px; margin-bottom: 20px; display: none; }
+        .user-card { background: white; padding: 10px; border-radius: 8px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; border-right: 4px solid var(--admin); }
+                    </style>
   </head>
 
   <body>
@@ -129,25 +151,29 @@
       </div>
     </form>
 
-<div class="main-container">
-    <div id="auth-container">
-        <h2 style="text-align: center;">تسجيل الدخول</h2>
+<div class="app-container">
+    <div id="auth-container" class="auth-box">
+        <h2 style="text-align: center;">مرحباً بك</h2>
         <input type="email" id="email-input" placeholder="البريد الإلكتروني">
         <input type="password" id="password-input" placeholder="كلمة المرور">
-        <button id="login-btn">دخول</button>
-        <button id="signup-btn" style="background: #28a745;">إنشاء حساب جديد</button>
+        <button id="login-btn" class="btn btn-login">دخول</button>
+        <button id="signup-btn" class="btn btn-signup">إنشاء حساب جديد</button>
+    </div>
+
+    <div id="admin-panel">
+        <h3 style="margin-top:0; color: var(--admin);">👑 لوحة التحكم</h3>
+        <div id="users-list"></div>
     </div>
 
     <div id="chat-container" style="display: none;">
-        <button id="logout-btn">تسجيل الخروج 🚪</button>
+        <button id="logout-btn" class="btn btn-logout">تسجيل الخروج 🚪</button>
         <div id="chat-box"></div>
-        <div style="display: flex; gap: 5px;">
-            <input type="text" id="message-input" placeholder="اكتب رسالة..." style="margin:0;">
-            <button id="send-btn" style="width: 80px;">إرسال</button>
+        <div style="display: flex; gap: 8px;">
+            <input type="text" id="message-input" placeholder="اكتب رسالة..." style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+            <button id="send-btn" class="btn btn-login" style="width: 80px; margin-top:0;">إرسال</button>
         </div>
     </div>
 </div>
-
     <script type="module" src="script.js"></script>
   </body>
 </html>
