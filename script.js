@@ -1,118 +1,101 @@
-// 1. استدعاء المكتبات
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded, remove, onChildRemoved, update, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, push, onChildAdded, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-console.log("✅ ملف script.js اشتغل بنجاح!");
+// 1. بياناتك اللي نسختها من فايربيز (حطها هنا)
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-// 2. إعدادات فايربيز (تأكد من بياناتك هنا)
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC_E_kKpHr6w3Vo3GbmoSq8AYR8vUGsXo8",
-  authDomain: "o2omar-ed97b.firebaseapp.com",
-  databaseURL: "https://o2omar-ed97b-default-rtdb.firebaseio.com",
-  projectId: "o2omar-ed97b",
-  storageBucket: "o2omar-ed97b.firebasestorage.app",
-  messagingSenderId: "196235814426",
-  appId: "1:196235814426:web:747743fb40c6c8a5de93a3"
+  apiKey: "AIzaSyAMV3-20MM0bvwQ8xrofLyY_h2y7rlUd90",
+  authDomain: "real-ffb38.firebaseapp.com",
+  databaseURL: "https://real-ffb38-default-rtdb.firebaseio.com",
+  projectId: "real-ffb38",
+  storageBucket: "real-ffb38.firebasestorage.app",
+  messagingSenderId: "896035772842",
+  appId: "1:896035772842:web:829d43c7818880685c33d3"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+
+// تشغيل الفايربيز
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getDatabase(app);
 
-const ADMIN_EMAIL = "omar@example.com"; // إيميلك الأدمن
-let currentUser = null;
-
-// 3. مراقبة حالة المستخدم
+// 2. مراقب حالة المستخدم (بيشتغل لوحده أول ما تفتح الصفحة)
 onAuthStateChanged(auth, (user) => {
-    console.log("👤 حالة المستخدم تغيرت إلى:", user ? user.email : "غير مسجل");
     const authContainer = document.getElementById("auth-container");
     const chatContainer = document.getElementById("chat-container");
-    const adminPanel = document.getElementById("admin-panel");
-    const logoutBtn = document.getElementById("logout-btn");
 
     if (user) {
-        currentUser = user;
-        if(authContainer) authContainer.style.display = "none";
-        if(chatContainer) chatContainer.style.display = "block";
-        if(logoutBtn) logoutBtn.style.display = "block";
-        if (user.email === ADMIN_EMAIL && adminPanel) adminPanel.style.display = "block";
+        console.log("تم تسجيل الدخول بـ:", user.email);
+        authContainer.style.display = "none";
+        chatContainer.style.display = "block";
     } else {
-        currentUser = null;
-        if(authContainer) authContainer.style.display = "block";
-        if(chatContainer) chatContainer.style.display = "none";
-        if(adminPanel) adminPanel.style.display = "none";
-        if(logoutBtn) logoutBtn.style.display = "none";
+        console.log("لا يوجد مستخدم حالياً");
+        authContainer.style.display = "block";
+        chatContainer.style.display = "none";
     }
 });
 
-// 4. ربط الزراير (طريقة يدوية قوية)
-window.onload = () => {
-    console.log("🚀 الصفحة حملت تمام، جاري ربط الزراير...");
+// 3. ربط الأوامر بالزراير (الطريقة الأضمن)
+document.addEventListener("DOMContentLoaded", () => {
+    
+    // زرار إنشاء الحساب
+    document.getElementById("signup-btn").onclick = () => {
+        const email = document.getElementById("email-input").value;
+        const pass = document.getElementById("password-input").value;
+        createUserWithEmailAndPassword(auth, email, pass)
+            .then((res) => {
+                // حفظ بياناته في الداتابيز
+                set(ref(db, 'users/' + res.user.uid), { email: email, role: "user" });
+                alert("مبروك! الحساب اتعمل.");
+            })
+            .catch(err => alert("خطأ في التسجيل: " + err.message));
+    };
 
-    const loginBtn = document.getElementById("login-btn");
-    const signupBtn = document.getElementById("signup-btn");
-    const logoutBtn = document.getElementById("logout-btn");
+    // زرار الدخول
+    document.getElementById("login-btn").onclick = () => {
+        const email = document.getElementById("email-input").value;
+        const pass = document.getElementById("password-input").value;
+        signInWithEmailAndPassword(auth, email, pass)
+            .catch(err => alert("بيانات غلط: " + err.message));
+    };
 
-    if (loginBtn) {
-        loginBtn.onclick = () => {
-            const email = document.getElementById("email-input").value;
-            const pass = document.getElementById("password-input").value;
-            console.log("🔄 محاولة تسجيل دخول...");
-            signInWithEmailAndPassword(auth, email, pass)
-                .catch(err => alert("خطأ دخول: " + err.message));
-        };
-    }
+    // زرار الخروج
+    document.getElementById("logout-btn").onclick = () => {
+        signOut(auth);
+    };
 
-    if (signupBtn) {
-        signupBtn.onclick = () => {
-            const email = document.getElementById("email-input").value;
-            const pass = document.getElementById("password-input").value;
-            console.log("🔄 محاولة إنشاء حساب...");
-            createUserWithEmailAndPassword(auth, email, pass)
-                .then(res => {
-                    set(ref(db, 'users/' + res.user.uid), { email, role: "user", features: { vip: false } });
-                    alert("تم التسجيل!");
-                })
-                .catch(err => alert("خطأ تسجيل: " + err.message));
-        };
-    }
+    // زرار إرسال الرسائل
+    document.getElementById("send-btn").onclick = () => {
+        const input = document.getElementById("message-input");
+        if (input.value.trim() !== "" && auth.currentUser) {
+            push(ref(db, "messages"), {
+                senderId: auth.currentUser.uid,
+                text: input.value,
+                time: Date.now()
+            });
+            input.value = "";
+        }
+    };
+});
 
-    if (logoutBtn) {
-        logoutBtn.onclick = () => { if(confirm("خروج؟")) signOut(auth); };
-    }
-};
-
-// 5. إرسال الرسائل (خارج الـ window.onload)
-window.sendMessage = function() {
-    const input = document.getElementById("message-input");
-    if (input && input.value.trim() !== "" && currentUser) {
-        push(ref(db, "messages"), {
-            senderId: currentUser.uid,
-            text: input.value,
-            timestamp: Date.now()
-        });
-        input.value = "";
-    }
-};
-
-// 6. عرض وحذف الرسائل
+// 4. استقبال الرسايل وعرضها
 onChildAdded(ref(db, "messages"), (data) => {
     const chatBox = document.getElementById("chat-box");
-    if(!chatBox) return;
     const msg = data.val();
     const div = document.createElement("div");
-    div.classList.add("message");
-    div.id = data.key;
-    div.classList.add(currentUser && msg.senderId === currentUser.uid ? "my-message" : "others-message");
-
-    let deleteBtn = (currentUser && currentUser.email === ADMIN_EMAIL) 
-        ? `<span onclick="deleteMessage('${data.key}')" style="color:red; cursor:pointer;">[X]</span>` : "";
-
-    div.innerHTML = `<span>${msg.text}</span> ${deleteBtn}`;
+    div.innerText = msg.text;
+    // تنسيق بسيط
+    div.style.margin = "5px";
+    div.style.padding = "5px";
+    div.style.background = "#eee";
     chatBox.appendChild(div);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
-
-window.deleteMessage = (id) => remove(ref(db, "messages/" + id));
-onChildRemoved(ref(db, "messages"), (data) => document.getElementById(data.key)?.remove());
