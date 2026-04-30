@@ -164,14 +164,15 @@
       &starf; &blacktriangleleft;
     </footer>
 
-<script type="module">
-  // 1. استدعاء جميع المكتبات اللازمة
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getDatabase, ref, push, onChildAdded, remove, onChildRemoved, update, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  // 2. إعدادات فايربيز (استبدلها ببياناتك)
-  const firebaseConfig = {
+  <script type="module">
+    // 1. استدعاء كل الأدوات المطلوبة من فايربيز
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, push, onChildAdded, remove, onChildRemoved, update, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    // 2. إعدادات فايربيز (استبدل القيم دي ببيانات مشروعك الحقيقية)
+    const firebaseConfig = {
   apiKey: "AIzaSyC_E_kKpHr6w3Vo3GbmoSq8AYR8vUGsXo8",
   authDomain: "o2omar-ed97b.firebaseapp.com",
   databaseURL: "https://o2omar-ed97b-default-rtdb.firebaseio.com",
@@ -180,173 +181,156 @@
   messagingSenderId: "196235814426",
   appId: "1:196235814426:web:747743fb40c6c8a5de93a3"
 };
+    // تشغيل الخدمات
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  const auth = getAuth(app);
-  const messagesRef = ref(db, "messages");
+    // --- إعدادات أساسية ---
+    const ADMIN_EMAIL = "o6003558@gmail.com"; // اكتب إيميلك هنا عشان تبقى الأدمن
+    let currentUser = null;
 
-  // --- إعدادات الأدمن ---
-  const ADMIN_EMAIL = "o6003558@gmail.com"; // ضع إيميلك هنا
-  let currentUser = null;
+    // 3. مراقبة حالة المستخدم (هل هو داخل ولا خارج؟)
+    onAuthStateChanged(auth, (user) => {
+        const authContainer = document.getElementById("auth-container");
+        const chatContainer = document.getElementById("chat-container");
+        const adminPanel = document.getElementById("admin-panel");
+        const logoutBtn = document.getElementById("logout-btn");
 
-  // 3. مراقبة حالة تسجيل الدخول
-  onAuthStateChanged(auth, (user) => {
-    const adminPanel = document.getElementById("admin-panel");
-    const authContainer = document.getElementById("auth-container");
-    const logoutBtn = document.getElementById("logout-btn");
-    
-    if (user) {
-      currentUser = user;
-      console.log("Logged in as:", user.email);
-      authContainer.style.display = "none"; // إخفاء فورم الدخول بعد النجاح
-      
-      if (user.email === ADMIN_EMAIL) {
-        adminPanel.style.display = "block"; // إظهار لوحة الأدمن
-        loadUsersList();
-      }
-    } else {
-      currentUser = null;
-      adminPanel.style.display = "none";
-      authContainer.style.display = "block";
-    }
-     if (user) {
-        // لو المستخدم مسجل دخول، أظهر زرار الخروج
-        logoutBtn.style.display = "block";
-        
-        // ... (باقي الكود بتاعك لإظهار الشات أو لوحة الأدمن) ...
-    } else {
-        // لو المستخدم مش مسجل، أخفي زرار الخروج
-        logoutBtn.style.display = "none";
-        
-        // ... (باقي الكود بتاعك لإظهار فورم الدخول) ...
-    }
-});
-  });
+        if (user) {
+            // المستخدم سجل دخوله بنجاح
+            currentUser = user;
+            if(authContainer) authContainer.style.display = "none";
+            if(chatContainer) chatContainer.style.display = "block";
+            if(logoutBtn) logoutBtn.style.display = "block";
 
-  // 4. وظائف الحسابات (تسجيل وإنشاء)
-  window.signup = function() {
-    const email = document.getElementById("email-input").value;
-    const pass = document.getElementById("password-input").value;
-    createUserWithEmailAndPassword(auth, email, pass)
-      .then((userCredential) => {
-        // إنشاء ملف لليوزر في قاعدة البيانات عند التسجيل أول مرة
-        set(ref(db, 'users/' + userCredential.user.uid), {
-          email: email,
-          role: "user",
-          features: { vip: false }
-        });
-        alert("تم إنشاء الحساب!");
-      })
-      .catch((err) => alert(err.message));
-  };
-
-  window.login = function() {
-    const email = document.getElementById("email-input").value;
-    const pass = document.getElementById("password-input").value;
-    signInWithEmailAndPassword(auth, email, pass)
-      .catch((err) => alert("خطأ في البيانات: " + err.message));
-  };
-
-  // ربط الزراير بالوظائف
-  document.getElementById("signup-btn").onclick = signup;
-  document.getElementById("login-btn").onclick = login;
-
-  // 5. نظام المحادثة (Chat)
-  window.sendMessage = function() {
-    const input = document.getElementById("message-input");
-    if (input.value.trim() !== "" && currentUser) {
-      push(messagesRef, {
-        senderId: currentUser.uid,
-        senderEmail: currentUser.email,
-        text: input.value,
-        time: Date.now()
-      });
-      input.value = "";
-    } else if (!currentUser) {
-      alert("سجل دخول أولاً لإرسال رسائل!");
-    }
-  };
-  document.getElementById("send-btn").onclick = sendMessage;
-
-  // عرض الرسايل
-  onChildAdded(messagesRef, (data) => {
-    const chatBox = document.getElementById("chat-box");
-    const msgData = data.val();
-    const msgId = data.key;
-
-    const msgDiv = document.createElement("div");
-    msgDiv.classList.add("message");
-    msgDiv.id = msgId;
-
-    // تمييز اليمين والشمال بناءً على الـ UID
-    if (currentUser && msgData.senderId === currentUser.uid) {
-      msgDiv.classList.add("my-message");
-    } else {
-      msgDiv.classList.add("others-message");
-    }
-
-    // زرار المسح يظهر فقط لو أنت داخل بإيميل الأدمن
-    let deleteBtn = "";
-    if (currentUser && currentUser.email === ADMIN_EMAIL) {
-      deleteBtn = `<button onclick="deleteMsg('${msgId}')" style="color:red; border:none; background:none; cursor:pointer; font-size:10px;">[X]</button>`;
-    }
-
-    msgDiv.innerHTML = `<span>${msgData.text}</span> ${deleteBtn}`;
-    chatBox.appendChild(msgDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  });
-
-  // حذف الرسالة من عند الكل (Real-time)
-  window.deleteMsg = function(id) {
-    if(confirm("مسح الرسالة؟")) remove(ref(db, "messages/" + id));
-  };
-
-  onChildRemoved(messagesRef, (data) => {
-    const el = document.getElementById(data.key);
-    if(el) el.remove();
-  });
-
-  // 6. وظائف لوحة التحكم (Admin)
-  function loadUsersList() {
-    onValue(ref(db, 'users'), (snapshot) => {
-      const list = document.getElementById("users-list");
-      list.innerHTML = "";
-      snapshot.forEach((child) => {
-        const userData = child.val();
-        const uid = child.key;
-        if(userData.email === ADMIN_EMAIL) return;
-
-        const isVip = userData.features?.vip || false;
-        const div = document.createElement("div");
-        div.style = "padding:10px; border-bottom:1px solid #ddd; background:#fff; margin-bottom:5px;";
-        div.innerHTML = `
-          <p>${userData.email}</p>
-          <button onclick="toggleVip('${uid}', ${isVip})" style="background:${isVip ? 'red' : 'green'}; color:white;">
-            ${isVip ? 'إلغاء VIP' : 'تفعيل VIP'}
-          </button>
-        `;
-        list.appendChild(div);
-      });
+            // فحص هل المستخدم هو الأدمن؟
+            if (user.email === ADMIN_EMAIL) {
+                if(adminPanel) adminPanel.style.display = "block";
+                loadUsersForAdmin(); // تحميل قائمة المستخدمين للأدمن
+            }
+        } else {
+            // المستخدم مسجل خروجه
+            currentUser = null;
+            if(authContainer) authContainer.style.display = "block";
+            if(chatContainer) chatContainer.style.display = "none";
+            if(adminPanel) adminPanel.style.display = "none";
+            if(logoutBtn) logoutBtn.style.display = "none";
+            document.getElementById("chat-box").innerHTML = ""; // تنظيف الشاشة
+        }
     });
-  }
 
-  window.toggleVip = function(uid, currentStatus) {
-    update(ref(db, 'users/' + uid + '/features'), { vip: !currentStatus });
-  };
+    // 4. وظائف الحسابات (تسجيل، دخول، خروج)
+    window.signup = function() {
+        const email = document.getElementById("email-input").value;
+        const pass = document.getElementById("password-input").value;
+        createUserWithEmailAndPassword(auth, email, pass)
+            .then((res) => {
+                // حفظ بيانات المستخدم في قاعدة البيانات عند التسجيل
+                set(ref(db, 'users/' + res.user.uid), {
+                    email: email,
+                    role: "user",
+                    features: { vip: false }
+                });
+                alert("تم إنشاء الحساب بنجاح!");
+            })
+            .catch((err) => alert("خطأ في التسجيل: " + err.message));
+    };
 
-  // وظيفة تسجيل الخروج
-window.logout = function() {
-    if(confirm("هل تريد تسجيل الخروج؟")) {
-        signOut(auth).then(() => {
-            // سيتم التعامل مع الإخفاء والإظهار تلقائياً داخل onAuthStateChanged
-            alert("تم تسجيل الخروج");
-        }).catch((error) => {
-            console.error("خطأ أثناء الخروج:", error);
+    window.login = function() {
+        const email = document.getElementById("email-input").value;
+        const pass = document.getElementById("password-input").value;
+        signInWithEmailAndPassword(auth, email, pass)
+            .catch((err) => alert("خطأ في الدخول: " + err.message));
+    };
+
+    window.logout = function() {
+        if(confirm("هل تريد تسجيل الخروج؟")) signOut(auth);
+    };
+
+    // 5. وظائف نظام الشات (إرسال، عرض، حذف)
+    window.sendMessage = function() {
+        const input = document.getElementById("message-input");
+        if (input.value.trim() !== "" && currentUser) {
+            push(ref(db, "messages"), {
+                senderId: currentUser.uid,
+                senderEmail: currentUser.email,
+                text: input.value,
+                timestamp: Date.now()
+            });
+            input.value = "";
+        }
+    };
+
+    // مراقبة الرسائل الجديدة
+    onChildAdded(ref(db, "messages"), (data) => {
+        const chatBox = document.getElementById("chat-box");
+        const msg = data.val();
+        const msgId = data.key;
+
+        const div = document.createElement("div");
+        div.classList.add("message");
+        div.id = msgId;
+
+        // تمييز اليمين (أنا) والشمال (الباقي)
+        div.classList.add(currentUser && msg.senderId === currentUser.uid ? "my-message" : "others-message");
+
+        // زرار الحذف (يظهر للأدمن فقط)
+        let deleteBtn = "";
+        if (currentUser && currentUser.email === ADMIN_EMAIL) {
+            deleteBtn = `<span onclick="deleteMessage('${msgId}')" style="cursor:pointer; color:red; margin-right:8px; font-size:10px;">[حذف]</span>`;
+        }
+
+        div.innerHTML = `<span>${msg.text}</span> ${deleteBtn}`;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+
+    // حذف الرسالة من قاعدة البيانات
+    window.deleteMessage = function(id) {
+        if(confirm("حذف الرسالة نهائياً من عند الكل؟")) remove(ref(db, "messages/" + id));
+    };
+
+    // مراقبة لو أي رسالة اتمسحت عشان نشيلها من الشاشة فوراً
+    onChildRemoved(ref(db, "messages"), (data) => {
+        const el = document.getElementById(data.key);
+        if(el) el.remove();
+    });
+
+    // 6. وظائف لوحة التحكم (للأدمن فقط)
+    function loadUsersForAdmin() {
+        onValue(ref(db, 'users'), (snapshot) => {
+            const list = document.getElementById("users-list");
+            if(!list) return;
+            list.innerHTML = "";
+            snapshot.forEach((child) => {
+                const user = child.val();
+                const uid = child.key;
+                
+                // الأدمن مبيتحكمش في حسابه هنا
+                if(user.email === ADMIN_EMAIL) return;
+
+                const isVip = user.features?.vip || false;
+                const card = document.createElement("div");
+                card.style = "background:white; padding:10px; border-bottom:1px solid #ddd; margin-bottom:5px;";
+                card.innerHTML = `
+                    <p style="margin:0; font-size:14px;">📧 ${user.email}</p>
+                    <button onclick="toggleVip('${uid}', ${isVip})" style="background:${isVip ? '#dc3545' : '#28a745'}; color:white; border:none; padding:5px; border-radius:3px; cursor:pointer; width:100%; margin-top:5px;">
+                        ${isVip ? 'إلغاء VIP' : 'تفعيل VIP'}
+                    </button>
+                `;
+                list.appendChild(card);
+            });
         });
     }
-};
 
-</script>     
+    // تبديل حالة الـ VIP للمستخدم
+    window.toggleVip = function(uid, currentStatus) {
+        update(ref(db, 'users/' + uid + '/features'), { vip: !currentStatus });
+    };
+
+</script>
+
+ 
   </body>
 </html>
