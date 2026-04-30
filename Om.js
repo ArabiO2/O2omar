@@ -47,33 +47,60 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// 4. وظائف الحسابات (ربط مباشر مع الـ window عشان الـ HTML يشوفهم)
-window.signup = function() {
-    const email = document.getElementById("email-input").value;
-    const pass = document.getElementById("password-input").value;
-    createUserWithEmailAndPassword(auth, email, pass)
-        .then((res) => {
-            set(ref(db, 'users/' + res.user.uid), {
-                email: email,
-                role: "user",
-                features: { vip: false }
-            });
-            alert("تم إنشاء الحساب!");
-        })
-        .catch((err) => alert(err.message));
-};
+// داخل ملف script.js
 
-window.login = function() {
-    const email = document.getElementById("email-input").value;
-    const pass = document.getElementById("password-input").value;
-    console.log("جاري تسجيل الدخول..."); // عشان نتأكد إن الزرار شغال
-    signInWithEmailAndPassword(auth, email, pass)
-        .catch((err) => alert("خطأ: " + err.message));
-};
+// ... (تأكد إن الـ imports والـ config موجودين فوق) ...
 
-window.logout = function() {
-    if(confirm("خروج؟")) signOut(auth);
-};
+// 4. ربط الزراير بالأوامر (EventListener)
+// ننتظر الصفحة تحمل الأول عشان نضمن إن الزراير موجودة
+document.addEventListener('DOMContentLoaded', () => {
+    
+    const loginBtn = document.getElementById("login-btn");
+    const signupBtn = document.getElementById("signup-btn");
+    const logoutBtn = document.getElementById("logout-btn");
+    const sendBtn = document.getElementById("send-btn");
+
+    if (loginBtn) {
+        loginBtn.addEventListener('click', () => {
+            const email = document.getElementById("email-input").value;
+            const pass = document.getElementById("password-input").value;
+            console.log("محاولة دخول بـ:", email);
+            signInWithEmailAndPassword(auth, email, pass)
+                .then(() => console.log("تم الدخول!"))
+                .catch((err) => alert("خطأ في الدخول: " + err.message));
+        });
+    }
+
+    if (signupBtn) {
+        signupBtn.addEventListener('click', () => {
+            const email = document.getElementById("email-input").value;
+            const pass = document.getElementById("password-input").value;
+            createUserWithEmailAndPassword(auth, email, pass)
+                .then((res) => {
+                    set(ref(db, 'users/' + res.user.uid), {
+                        email: email,
+                        role: "user",
+                        features: { vip: false }
+                    });
+                    alert("تم إنشاء الحساب بنجاح!");
+                })
+                .catch((err) => alert("خطأ في التسجيل: " + err.message));
+        });
+    }
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            if(confirm("هل تريد الخروج؟")) signOut(auth);
+        });
+    }
+
+    if (sendBtn) {
+        sendBtn.addEventListener('click', sendMessage);
+    }
+});
+
+// باقي الدوال (sendMessage, loadUsersForAdmin, إلخ) خليها زي ما هي تحت
+
 
 // 5. نظام الشات
 window.sendMessage = function() {
