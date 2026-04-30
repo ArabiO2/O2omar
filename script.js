@@ -18,7 +18,7 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 
 // عدل ده بإيميلك الشخصي عشان تكون الأدمن
-const ADMIN_EMAIL = "omar@example.com"; 
+const ADMIN_EMAIL = "o6003558@gmail.com"; 
 
 // --- 1. مراقبة حالة المستخدم والتبديل بين الواجهات ---
 onAuthStateChanged(auth, (user) => {
