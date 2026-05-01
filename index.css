@@ -430,6 +430,21 @@ body:has(.box:hover) .spans-n {
   transform: scale(1.2);
 }
 
+.haha {
+  display: flex  ;
+  justify-content: center ; 
+}
+.haha .ha {
+  width : 95% ; 
+  background-color: black ; 
+  font-family: "zain" ; 
+  color: red ; 
+  display: flex; 
+  justify-content: center ; 
+  padding: 15px ; 
+  border-radius: 15px ; 
+}
+
 /* end section of PDFs */
 .motivation {
   margin-bottom: 40px;
@@ -458,20 +473,7 @@ body:has(.box:hover) .spans-n {
   }
 }
 
-.haha {
-  display: flex  ;
-  justify-content: center ; 
-}
-.haha .ha {
-  width : 95% ; 
-  background-color: black ; 
-  font-family: "zain" ; 
-  color: red ; 
-  display: flex; 
-  justify-content: center ; 
-  padding: 15px ; 
-  border-radius: 15px ; 
-}
+
 
 /* SCREEN WIDTH  */
 
