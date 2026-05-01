@@ -20,28 +20,6 @@
     <meta property="og:type" content="website" />
     <link rel="shortcut icon" href="reallogo.png" type="image/x-icon" />
     <link rel="shortcut icon" href="reallogo.png" type="image/x-icon" />
-    <style>
-        :root { --primary: #0084ff; --admin: #ff9800; --danger: #ff4d4d; --bg: #f0f2f5; }
-        
-        .app-container { width: 100%; max-width: 500px; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        
-        /* واجهة الدخول */
-        .auth-box input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; margin-top: 5px; }
-        .btn-login { background: var(--primary); color: white; }
-        .btn-signup { background: #28a745; color: white; }
-        .btn-logout { background: var(--danger); color: white; margin-bottom: 15px; }
-
-        /* واجهة الشات */
-        #chat-box { height: 350px; border: 1px solid #eee; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; justify-content: center ; background: #f9f9f9; border-radius: 10px; margin: 15px 0; }
-        .msg { padding: 10px 15px; border-radius: 18px; max-width: 80%; font-size: 14px; line-height: 1.4; position: relative; }
-        .my-msg { align-self: flex-end; background: var(--primary); color: white; border-bottom-left-radius: 2px; }
-        .other-msg { align-self: flex-start; background: #e4e6eb; color: black; border-bottom-right-radius: 2px; }
-
-        /* واجهة الأدمن */
-        #admin-panel { background: #fff3e0; border: 2px solid var(--admin); padding: 15px; border-radius: 10px; margin-bottom: 20px; display: none; }
-        .user-card { background: white; padding: 10px; border-radius: 8px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; border-right: 4px solid var(--admin); }
-                    </style>
   </head>
 
   <body>
@@ -151,29 +129,106 @@
       </div>
     </form>
 
-<div class="app-container">
-    <div id="auth-container" class="auth-box">
-        <h2 style="text-align: center;">مرحباً بك</h2>
-        <input type="email" id="email-input" placeholder="البريد الإلكتروني">
-        <input type="password" id="password-input" placeholder="كلمة المرور">
-        <button id="login-btn" class="btn btn-login">دخول</button>
-        <button id="signup-btn" class="btn btn-signup">إنشاء حساب جديد</button>
-    </div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded, remove, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    <div id="admin-panel">
-        <h3 style="margin-top:0; color: var(--admin);">👑 لوحة التحكم</h3>
-        <div id="users-list"></div>
-    </div>
+  // 1. حط بياناتك هنا (الـ Config بتاعك)
 
-    <div id="chat-container" style="display: none;">
-        <button id="logout-btn" class="btn btn-logout">تسجيل الخروج 🚪</button>
-        <div id="chat-box"></div>
-        <div style="display: flex; gap: 8px;">
-            <input type="text" id="message-input" placeholder="اكتب رسالة..." style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
-            <button id="send-btn" class="btn btn-login" style="width: 80px; margin-top:0;">إرسال</button>
-        </div>
-    </div>
-</div>
-    <script type="module" src="script.js"></script>
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAMV3-20MM0bvwQ8xrofLyY_h2y7rlUd90",
+  authDomain: "real-ffb38.firebaseapp.com",
+  databaseURL: "https://real-ffb38-default-rtdb.firebaseio.com",
+  projectId: "real-ffb38",
+  storageBucket: "real-ffb38.firebasestorage.app",
+  messagingSenderId: "896035772842",
+  appId: "1:896035772842:web:829d43c7818880685c33d3"
+};
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const messagesRef = ref(db, "messages");
+
+  // 2. تفعيل الأدمن (سيب السطر ده موجود وافتح الصفحة، وبعد ما يشتغل ممكن تمسحه لو مش عايز حد غيرك يفعله)
+  localStorage.setItem("adminKey", "omar_admin_77"); 
+
+  const isAdmin = localStorage.getItem("adminKey") === "omar_admin_77";
+  
+  // معرف المستخدم العادي (عشان اليمين والشمال)
+  if (!localStorage.getItem("userId")) {
+      localStorage.setItem("userId", "user_" + Math.random().toString(36).substr(2, 9));
+  }
+  const myId = localStorage.getItem("userId");
+
+  // 3. وظيفة الإرسال
+  window.sendMessage = function() {
+    const input = document.getElementById("message-input");
+    if (input.value.trim() !== "") {
+      push(messagesRef, {
+        senderId: myId,
+        text: input.value,
+        time: Date.now()
+      });
+      input.value = "";
+    }
+  };
+  document.getElementById("send-btn").onclick = sendMessage;
+
+  // 4. عرض الرسائل
+  onChildAdded(messagesRef, (data) => {
+    const chatBox = document.getElementById("chat-box");
+    const msgData = data.val();
+    const msgId = data.key;
+
+    const msgDiv = document.createElement("div");
+    msgDiv.classList.add("message");
+
+    // يمين (others) ولا شمال (my-message)
+    if (msgData.senderId === myId) {
+        msgDiv.classList.add("my-message");
+    } else {
+        msgDiv.classList.add("others-message");
+    }
+
+    msgDiv.id = msgId;
+
+    // الكود ده بيراقب لو أي رسالة اتمسحت من السيرفر، يشيلها فوراً من شاشة كل المستخدمين
+onChildRemoved(messagesRef, (data) => {
+    const msgId = data.key; // بنعرف الـ ID بتاع الرسالة اللي اتمسحت
+    const element = document.getElementById(msgId); // بندور عليها في الصفحة
+    if (element) {
+        element.remove(); // بنشيلها من الـ HTML فوراً
+    }
+});
+
+    // زرار المسح يظهر للأدمن فقط
+    let deleteBtn = "";
+    if (isAdmin) {
+        deleteBtn = `<button class="delete-btn" onclick="deleteMessage('${msgId}')" style="margin-right:10px; color:red; border:none; background:none; cursor:pointer; font-weight:bold;">[مسح]</button>`;
+    }
+
+    msgDiv.innerHTML = `
+        <span>${msgData.text}</span>
+        ${deleteBtn}
+    `;
+
+    chatBox.appendChild(msgDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  });
+
+  // 5. وظيفة المسح (للأدمن)
+  window.deleteMessage = function(id) {
+    if (confirm("هل تريد مسح هذه الرسالة نهائياً؟")) {
+        remove(ref(db, "messages/" + id));
+        const element = document.getElementById(id);
+        if(element) element.remove();
+    }
+  };
+</script>
+
+
+    
+   
   </body>
 </html>
