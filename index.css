@@ -462,6 +462,12 @@ body:has(.box:hover) .spans-n {
   display: flex  ;
   justify-content: center ; 
 }
+.haha .ha {
+  width : 95% ; 
+  background-color: black ; 
+  font-family: "zain" ; 
+  color: red ; 
+}
 
 /* SCREEN WIDTH  */
 
