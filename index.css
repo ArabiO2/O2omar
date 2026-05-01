@@ -1013,3 +1013,47 @@ body:has(.box:hover) footer {
     text-align: right;
   font-family: "zain"
 }
+
+/* الخلفية الشفافة والمغبشة (Blur) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* سواد خفيف */
+    backdrop-filter: blur(8px); /* تأثير التغبيش */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* صندوق المحتوى في نص الشاشة */
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* زرار الإكس للقفل */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 25px;
+    cursor: pointer;
+    color: #888;
+}
+
+.close-btn:hover { color: #000; }
