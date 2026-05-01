@@ -149,11 +149,12 @@
 
     
 <script type ="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded, remove, onChildRemoved, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded, remove, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-// 1. إعدادات فايربيز (الخاصة بك)
+  // 1. حط بياناتك هنا (الـ Config بتاعك)
+
+// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAMV3-20MM0bvwQ8xrofLyY_h2y7rlUd90",
   authDomain: "real-ffb38.firebaseapp.com",
@@ -164,141 +165,88 @@ const firebaseConfig = {
   appId: "1:896035772842:web:829d43c7818880685c33d3"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const auth = getAuth(app);
-const messagesRef = ref(db, "messages");
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const messagesRef = ref(db, "messages");
 
-// --- إعدادات الأدمن والتعريف المؤقت ---
-const isAdmin = localStorage.getItem("adminKey") === "omar_admin_77";
-if (!localStorage.getItem("userId")) {
-    localStorage.setItem("userId", "user_" + Math.random().toString(36).substr(2, 9));
-}
-const myId = localStorage.getItem("userId");
+  // 2. تفعيل الأدمن (سيب السطر ده موجود وافتح الصفحة، وبعد ما يشتغل ممكن تمسحه لو مش عايز حد غيرك يفعله)
+    localStorage.setItem("adminKey", "omar_admin_77"); 
 
-// --- التحكم في النافذة المنبثقة (Modal) ---
-const modal = document.getElementById("auth-modal");
-const openBtn = document.getElementById("open-auth-btn");
-const closeBtn = document.getElementById("close-modal");
+  const isAdmin = localStorage.getItem("adminKey") === "omar_admin_77";
+  
+  // معرف المستخدم العادي (عشان اليمين والشمال)
+  if (!localStorage.getItem("userId")) {
+      localStorage.setItem("userId", "user_" + Math.random().toString(36).substr(2, 9));
+  }
+  const myId = localStorage.getItem("userId");
 
-if(openBtn) openBtn.onclick = () => modal.style.display = "flex";
-if(closeBtn) closeBtn.onclick = () => modal.style.display = "none";
-window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; }
-
-// --- مراقبة حالة المستخدم (Firebase Auth) ---
-onAuthStateChanged(auth, (user) => {
-    const loginBtn = document.getElementById("login-btn");
-    const signupBtn = document.getElementById("signup-btn");
-    const logoutBtn = document.getElementById("logout-btn");
-
-    if (user) {
-        if(openBtn) openBtn.innerText = "أهلاً: " + user.email.split('@')[0];
-        if(loginBtn) loginBtn.style.display = "none";
-        if(signupBtn) signupBtn.style.display = "none";
-        if(logoutBtn) logoutBtn.style.display = "block";
-    } else {
-        if(openBtn) openBtn.innerText = "تسجيل دخول / حساب جديد";
-        if(loginBtn) loginBtn.style.display = "block";
-        if(signupBtn) signupBtn.style.display = "block";
-        if(logoutBtn) logoutBtn.style.display = "none";
-    }
-});
-
-// --- وظائف التسجيل والدخول ---
-window.signup = function() {
-    const email = document.getElementById("email-input").value;
-    const pass = document.getElementById("password-input").value;
-    createUserWithEmailAndPassword(auth, email, pass).then(() => {
-        alert("تم إنشاء الحساب بنجاح!");
-        modal.style.display = "none";
-    }).catch(err => alert(err.message));
-};
-
-window.login = function() {
-    const email = document.getElementById("email-input").value;
-    const pass = document.getElementById("password-input").value;
-    signInWithEmailAndPassword(auth, email, pass).then(() => {
-        modal.style.display = "none";
-    }).catch(err => alert(err.message));
-};
-
-window.logout = function() {
-    signOut(auth).then(() => {
-        modal.style.display = "none";
-    });
-};
-
-// ربط الزراير بالوظائف
-document.getElementById("signup-btn").onclick = window.signup;
-document.getElementById("login-btn").onclick = window.login;
-document.getElementById("logout-btn").onclick = window.logout;
-
-// --- نظام الشات (إرسال) ---
-window.sendMessage = function() {
+  // 3. وظيفة الإرسال
+  window.sendMessage = function() {
     const input = document.getElementById("message-input");
     if (input.value.trim() !== "") {
-        push(messagesRef, {
-            senderId: auth.currentUser ? auth.currentUser.uid : myId,
-            senderName: auth.currentUser ? auth.currentUser.email.split('@')[0] : "زائر",
-            text: input.value,
-            time: Date.now()
-        });
-        input.value = "";
+      push(messagesRef, {
+        senderId: myId,
+        text: input.value,
+        time: Date.now()
+      });
+      input.value = "";
     }
-};
-document.getElementById("send-btn").onclick = sendMessage;
+  };
+  document.getElementById("send-btn").onclick = sendMessage;
 
-// --- نظام الشات (عرض واستقبال) ---
-onChildAdded(messagesRef, (data) => {
+  // 4. عرض الرسائل
+  onChildAdded(messagesRef, (data) => {
     const chatBox = document.getElementById("chat-box");
     const msgData = data.val();
     const msgId = data.key;
 
     const msgDiv = document.createElement("div");
     msgDiv.classList.add("message");
-    msgDiv.id = msgId;
 
-    // تحديد مكان الرسالة (يمين ولا شمال)
-    const currentUID = auth.currentUser ? auth.currentUser.uid : myId;
-    if (msgData.senderId === currentUID) {
+    // يمين (others) ولا شمال (my-message)
+    if (msgData.senderId === myId) {
         msgDiv.classList.add("my-message");
     } else {
         msgDiv.classList.add("others-message");
     }
 
-    // زرار المسح (للأدمن فقط)
+    msgDiv.id = msgId;
+
+    // الكود ده بيراقب لو أي رسالة اتمسحت من السيرفر، يشيلها فوراً من شاشة كل المستخدمين
+onChildRemoved(messagesRef, (data) => {
+    const msgId = data.key; // بنعرف الـ ID بتاع الرسالة اللي اتمسحت
+    const element = document.getElementById(msgId); // بندور عليها في الصفحة
+    if (element) {
+        element.remove(); // بنشيلها من الـ HTML فوراً
+    }
+});
+
+    // زرار المسح يظهر للأدمن فقط
     let deleteBtn = "";
     if (isAdmin) {
-        deleteBtn = `<button onclick="deleteMessage('${msgId}')" style="margin-right:10px; color:red; border:none; background:none; cursor:pointer; font-size:10px;">[مسح]</button>`;
+        deleteBtn = `<button class="delete-btn" onclick="deleteMessage('${msgId}')" style="margin-right:10px; color:red; border:none; background:none; cursor:pointer; font-weight:bold;">[مسح]</button>`;
     }
 
     msgDiv.innerHTML = `
-        <small style="display:block; font-size:9px; opacity:0.6;">${msgData.senderName || 'زائر'}</small>
         <span>${msgData.text}</span>
         ${deleteBtn}
     `;
 
     chatBox.appendChild(msgDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
-});
+  });
 
-// مراقبة الحذف الفوري
-onChildRemoved(messagesRef, (data) => {
-    const element = document.getElementById(data.key);
-    if (element) element.remove();
-});
-
-// وظيفة المسح (للأدمن)
-window.deleteMessage = function(id) {
+  // 5. وظيفة المسح (للأدمن)
+  window.deleteMessage = function(id) {
     if (confirm("هل تريد مسح هذه الرسالة نهائياً؟")) {
         remove(ref(db, "messages/" + id));
+        const element = document.getElementById(id);
+        if(element) element.remove();
     }
-};
-
+  };
 </script>
 
-
-    
+</script>
    
   </body>
 </html>
