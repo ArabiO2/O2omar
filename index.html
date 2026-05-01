@@ -128,7 +128,17 @@
         </div>
       </div>
     </form>
+<div class="chat-container">
+    <div id="chat-box" style="height: 300px; border: 1px solid #ccc; overflow-y: auto; margin-bottom: 10px; padding: 10px; background: #f9f9f9;">
+        </div>
 
+    <div class="input-area">
+        <input type="text" id="message-input" placeholder="اكتب رسالتك هنا...">
+        <button id="send-btn">إرسال</button>
+    </div>
+</div>
+
+    
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getDatabase, ref, push, onChildAdded, remove, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
