@@ -51,8 +51,8 @@ a {
 html {
   scroll-behavior: smooth;
 }
+
 header {
-  background-color: var(--main-color);
   height: 60px;
   position: relative;
   display: flex;
@@ -64,6 +64,7 @@ header {
   top: 0;
   z-index: 20;
   transition: 0.5s;
+  margin-top: 5px;
 }
 header::after {
   content: " أقل جودة بأعلي الأسعار";
@@ -79,9 +80,6 @@ header::after {
   border-radius: 12px;
   font-family: "zain";
 }
-body:has(.box:hover) header {
-  background-color: #00ff1a;
-}
 @media (max-width: 767px) {
   header {
     font-size: 13px;
@@ -93,6 +91,11 @@ header .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #000;
+  border-radius: 51px;
+  width: 91%;
+  padding: 14px;
+  height: inherit;
 }
 header .container::after {
   content: "";
@@ -131,6 +134,7 @@ header .container::after {
     position: absolute;
     width: 80px;
     height: 80px;
+    display none ; 
     background-color: yellow;
     z-index: 100;
     border-radius: 50%;
@@ -152,7 +156,7 @@ header .container::after {
 header .container .logo {
   display: inline;
   animation: for-logo 1s linear alternate-reverse infinite;
-  color: black;
+  color: #fff;
 }
 @keyframes for-logo {
   50% {
@@ -163,7 +167,7 @@ header .container .logo {
   }
 }
 header .container .logo:hover {
-  color: rgb(255, 255, 255);
+  color: rgb(255,0,0);
 }
 
 header .container ul {
@@ -178,8 +182,13 @@ header .container ul li {
   font-size: 14px;
 }
 header .container ul li:hover {
-  color: rgb(255, 255, 255);
   transform: scale(1.2);
+}
+header .container ul li a {
+  color: #ff0000;
+}
+header .container ul li:hover a {
+  color: rgb(34, 0, 255);
 }
 .headA {
   font-family: "zain";
