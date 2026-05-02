@@ -232,7 +232,7 @@ header .container ul li:hover a {
   padding 6px ; 
   display: flex;
   justify-content: center ; 
-  animation: ha 2s linear infinite alternate; 
+  animation: ha 5s linear infinite alternate; 
 }
 @keyframes ha  {
   25% {
@@ -248,7 +248,10 @@ header .container ul li:hover a {
     background-color: white; 
     color:  blue ; 
   }
-  
+  100% {
+    background-color: white; 
+    color green;
+  } 
 }
 
 /* start section of PDFs */
