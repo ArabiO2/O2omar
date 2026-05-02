@@ -235,23 +235,16 @@ header .container ul li:hover a {
   animation: ha 15s linear infinite alternate; 
 }
 @keyframes ha  {
-  25% {
-    background-color: red ; 
-    color: black;
+from {
+  background-color: black; 
+  color: red ; 
+}
+  to {
+    background-color: red ;
+  color: black;
   }
-  50% {
-    background-color: blue; 
-    color: white; 
-  }
+    
   
-  75% {
-    background-color: white; 
-    color:  blue ; 
-  }
-  100% {
-    background-color: white; 
-    color : green;
-  } 
 }
 
 /* start section of PDFs */
