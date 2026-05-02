@@ -146,102 +146,102 @@
       &blacktriangleright; my regards , OMAR &copy; All rights reserved &reg;
       &starf; &blacktriangleleft;
     </footer>
+<script type="module" >
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded, remove, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, push, onChildAdded, remove, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+  // 1. حط بياناتك هنا (الـ Config بتاعك)
 
-        // 1. حط بياناتك هنا (الـ Config بتاعك)
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAMV3-20MM0bvwQ8xrofLyY_h2y7rlUd90",
+  authDomain: "real-ffb38.firebaseapp.com",
+  databaseURL: "https://real-ffb38-default-rtdb.firebaseio.com",
+  projectId: "real-ffb38",
+  storageBucket: "real-ffb38.firebasestorage.app",
+  messagingSenderId: "896035772842",
+  appId: "1:896035772842:web:829d43c7818880685c33d3"
+};
 
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyAMV3-20MM0bvwQ8xrofLyY_h2y7rlUd90",
-        authDomain: "real-ffb38.firebaseapp.com",
-        databaseURL: "https://real-ffb38-default-rtdb.firebaseio.com",
-        projectId: "real-ffb38",
-        storageBucket: "real-ffb38.firebasestorage.app",
-        messagingSenderId: "896035772842",
-        appId: "1:896035772842:web:829d43c7818880685c33d3"
-      };
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const messagesRef = ref(db, "messages");
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const messagesRef = ref(db, "messages");
+  // 2. تفعيل الأدمن (سيب السطر ده موجود وافتح الصفحة، وبعد ما يشتغل ممكن تمسحه لو مش عايز حد غيرك يفعله)
+   // localStorage.setItem("adminKey", "omar_admin_77"); 
 
-        // 2. تفعيل الأدمن (سيب السطر ده موجود وافتح الصفحة، وبعد ما يشتغل ممكن تمسحه لو مش عايز حد غيرك يفعله)
-          //localStorage.setItem("adminKey", "omar_admin_77");
+  const isAdmin = localStorage.getItem("adminKey") === "omar_admin_77";
+  
+  // معرف المستخدم العادي (عشان اليمين والشمال)
+  if (!localStorage.getItem("userId")) {
+      localStorage.setItem("userId", "user_" + Math.random().toString(36).substr(2, 9));
+  }
+  const myId = localStorage.getItem("userId");
 
-        const isAdmin = localStorage.getItem("adminKey") === "omar_admin_77";
-
-        // معرف المستخدم العادي (عشان اليمين والشمال)
-        if (!localStorage.getItem("userId")) {
-            localStorage.setItem("userId", "user_" + Math.random().toString(36).substr(2, 9));
-        }
-        const myId = localStorage.getItem("userId");
-
-        // 3. وظيفة الإرسال
-        window.sendMessage = function() {
-          const input = document.getElementById("message-input");
-          if (input.value.trim() !== "") {
-            push(messagesRef, {
-              senderId: myId,
-              text: input.value,
-              time: Date.now()
-            });
-            input.value = "";
-          }
-        };
-        document.getElementById("send-btn").onclick = sendMessage;
-
-        // 4. عرض الرسائل
-        onChildAdded(messagesRef, (data) => {
-          const chatBox = document.getElementById("chat-box");
-          const msgData = data.val();
-          const msgId = data.key;
-
-          const msgDiv = document.createElement("div");
-          msgDiv.classList.add("message");
-
-          // يمين (others) ولا شمال (my-message)
-          if (msgData.senderId === myId) {
-              msgDiv.classList.add("my-message");
-          } else {
-              msgDiv.classList.add("others-message");
-          }
-
-          msgDiv.id = msgId;
-          // الكود ده بيراقب لو أي رسالة اتمسحت من السيرفر، يشيلها فوراً من شاشة كل المستخدمين
-      onChildRemoved(messagesRef, (data) => {
-          const msgId = data.key; // بنعرف الـ ID بتاع الرسالة اللي اتمسحت
-          const element = document.getElementById(msgId); // بندور عليها في الصفحة
-          if (element) {
-              element.remove(); // بنشيلها من الـ HTML فوراً
-          }
+  // 3. وظيفة الإرسال
+  window.sendMessage = function() {
+    const input = document.getElementById("message-input");
+    if (input.value.trim() !== "") {
+      push(messagesRef, {
+        senderId: myId,
+        text: input.value,
+        time: Date.now()
       });
+      input.value = "";
+    }
+  };
+  document.getElementById("send-btn").onclick = sendMessage;
 
-          // زرار المسح يظهر للأدمن فقط
-          let deleteBtn = "";
-          if (isAdmin) {
-              deleteBtn = <button class="delete-btn" onclick="deleteMessage('${msgId}')" style="margin-right:10px; color:red; border:none; background:none; cursor:pointer; font-weight:bold;">[مسح]</button> ;
-          }
+  // 4. عرض الرسائل
+  onChildAdded(messagesRef, (data) => {
+    const chatBox = document.getElementById("chat-box");
+    const msgData = data.val();
+    const msgId = data.key;
 
-          msgDiv.innerHTML =
-              <span>${msgData.text}</span>
-              ${deleteBtn}
-          ;
+    const msgDiv = document.createElement("div");
+    msgDiv.classList.add("message");
 
-          chatBox.appendChild(msgDiv);
-          chatBox.scrollTop = chatBox.scrollHeight;
-        });
+    // يمين (others) ولا شمال (my-message)
+    if (msgData.senderId === myId) {
+        msgDiv.classList.add("my-message");
+    } else {
+        msgDiv.classList.add("others-message");
+    }
 
-        // 5. وظيفة المسح (للأدمن)
-        window.deleteMessage = function(id) {
-          if (confirm("هل تريد مسح هذه الرسالة نهائياً؟")) {
-              remove(ref(db, "messages/" + id));
-              const element = document.getElementById(id);
-              if(element) element.remove();
-          }
-        };
-    </script>
+    msgDiv.id = msgId;
+
+    // الكود ده بيراقب لو أي رسالة اتمسحت من السيرفر، يشيلها فوراً من شاشة كل المستخدمين
+onChildRemoved(messagesRef, (data) => {
+    const msgId = data.key; // بنعرف الـ ID بتاع الرسالة اللي اتمسحت
+    const element = document.getElementById(msgId); // بندور عليها في الصفحة
+    if (element) {
+        element.remove(); // بنشيلها من الـ HTML فوراً
+    }
+});
+
+    // زرار المسح يظهر للأدمن فقط
+    let deleteBtn = "";
+    if (isAdmin) {
+        deleteBtn = `<button class="delete-btn" onclick="deleteMessage('${msgId}')" style="margin-right:10px; color:red; border:none; background:none; cursor:pointer; font-weight:bold;">[مسح]</button>`;
+    }
+
+    msgDiv.innerHTML = `
+        <span>${msgData.text}</span>
+        ${deleteBtn}
+    `;
+
+    chatBox.appendChild(msgDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  });
+
+  // 5. وظيفة المسح (للأدمن)
+  window.deleteMessage = function(id) {
+    if (confirm("هل تريد مسح هذه الرسالة نهائياً؟")) {
+        remove(ref(db, "messages/" + id));
+        const element = document.getElementById(id);
+        if(element) element.remove();
+    }
+  };
+  </script>
   </body>
 </html>
