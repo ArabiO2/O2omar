@@ -232,20 +232,9 @@ header .container ul li:hover a {
   padding 6px ; 
   display: flex;
   justify-content: center ; 
-  animation: ha 15s linear infinite alternate; 
+ 
 }
-@keyframes ha  {
-from {
-  background-color: black; 
-  color: red ; 
-}
-  to {
-    background-color: red ;
-  color: black;
-  }
-    
-  
-}
+
 
 /* start section of PDFs */
 .special-heading {
