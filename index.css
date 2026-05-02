@@ -230,8 +230,25 @@ header .container ul li:hover a {
   color: red ; 
   font-family : "zain" ; 
   padding 6px ; 
-  display: flex; 
-  flex-direction: flex-start ; 
+  display: flex;
+  justify-content: center ; 
+  animation: ha 2s linear infinite alternate; 
+}
+@keyframes ha  {
+  25% {
+    background-color: red ; 
+    color: black;
+  }
+  50% {
+    background-color: blue; 
+    color: white; 
+  }
+  
+  75% {
+    background-color: white; 
+    color:  blue ; 
+  }
+  
 }
 
 /* start section of PDFs */
