@@ -218,6 +218,20 @@ header .container ul li:hover a {
 .tele .gram a:hover {
   color: #000000;
 }
+
+
+.haha {
+  display: flex ; 
+  justify-content : center; margin 10px 0 ; 
+}
+.haha .ha {
+  width: 92% ; 
+  background-color: black; 
+  color: red ; 
+  font-family : "zain" ; 
+  padding 6px ; 
+}
+
 /* start section of PDFs */
 .special-heading {
   text-align: center;
