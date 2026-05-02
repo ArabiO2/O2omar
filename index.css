@@ -134,11 +134,11 @@ header .container::after {
     position: absolute;
     width: 80px;
     height: 80px;
-    display none ; 
+    display  none ; 
     background-color: yellow;
     z-index: 100;
     border-radius: 50%;
-    top: -89%;
+    top: -95%;
     margin-left: 46%;
     transform: translateX(-82%);
     filter: blur(3px);
@@ -232,7 +232,7 @@ header .container ul li:hover a {
   padding 6px ; 
   display: flex;
   justify-content: center ; 
-  animation: ha 5s linear infinite alternate; 
+  animation: ha 15s linear infinite alternate; 
 }
 @keyframes ha  {
   25% {
@@ -250,7 +250,7 @@ header .container ul li:hover a {
   }
   100% {
     background-color: white; 
-    color green;
+    color : green;
   } 
 }
 
