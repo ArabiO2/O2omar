@@ -73,7 +73,7 @@ onChildAdded(messagesRef, (data) => {
   }
 
   // لون مخصص لاسم الراسل
-  const roleColor = msgData.role && msgData.role.includes("Admin") ? "#ff9800" : "#0084ff";
+  const roleColor = msgData.role && msgData.role.includes("Admin") ? "#ff9800" : "#ffffff";
 
   // بناء هيكل الرسالة (بدون خطوط غريبة وبأفضل تنسيق)
   msgDiv.innerHTML = `
