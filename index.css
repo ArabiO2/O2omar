@@ -230,6 +230,8 @@ header .container ul li:hover a {
   color: red ; 
   font-family : "zain" ; 
   padding 6px ; 
+  display: flex; 
+  flex-direction: flex-start ; 
 }
 
 /* start section of PDFs */
