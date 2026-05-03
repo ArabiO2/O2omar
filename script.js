@@ -17,7 +17,7 @@ const db = getDatabase(app);
 const messagesRef = ref(db, "messages");
 
 // 2. إعدادات الهوية والأدمن
-// localStorage.setItem("adminKey", "omar_admin_77"); // فعل السطر ده مرة واحدة لو عايز تبقى أدمن
+ localStorage.setItem("adminKey", "omar_admin_77"); // فعل السطر ده مرة واحدة لو عايز تبقى أدمن
 
 const isAdmin = localStorage.getItem("adminKey") === "omar_admin_77";
 
