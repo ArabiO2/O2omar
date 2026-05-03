@@ -1032,10 +1032,11 @@ body:has(.box:hover) footer {
 .delete-btn {
     font-size: 10px;
     margin-right: 8px;
-    color: white ;
+    color: white !important ;
     cursor: pointer;
     border: none;
     background: none;
+    font-family: "zain" ; 
 }
 /* تطبيق الخط على الرسايل ومربع الكتابة والزرار */
 .message, #message-input, #send-btn {
@@ -1090,6 +1091,7 @@ body:has(.box:hover) footer {
     font-size: 25px;
     cursor: pointer;
     color: #888;
+  font-family: "zain";
 }
 
 .close-btn:hover { color: #000; }
