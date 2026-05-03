@@ -85,7 +85,7 @@ onChildAdded(messagesRef, (data) => {
           ${msgData.text}
       </div>
       
-      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #00ff00; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 4px; font-family: inherit;">
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; color:white ; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 4px; font-family: inherit;">
           <span>${timeString} - ${dateString}</span>
           ${deleteBtn}
       </div>
