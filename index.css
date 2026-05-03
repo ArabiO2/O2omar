@@ -1011,8 +1011,8 @@ body:has(.box:hover) footer {
 /* رسايل المستخدمين التانيين (يمين) */
 .others-message {
     align-self: flex-end;
-    background-color: #ffffff;
-    color: #000;
+    background-color: black ;
+    color: red ;
     border-bottom-right-radius: 2px;
     font-family: "zain" ;
     margin: 5px ;
@@ -1021,8 +1021,8 @@ body:has(.box:hover) footer {
 /* رسائلي أنا (شمال) */
 .my-message {
     align-self: flex-start;
-    background-color: #ff0000;
-    color: #fff;
+    background-color: red;
+    color: black;
     border-bottom-left-radius: 2px;
     margin: 5px ;
     font-family: "zain" ; 
