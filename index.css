@@ -1021,7 +1021,7 @@ body:has(.box:hover) footer {
 /* رسائلي أنا (شمال) */
 .my-message {
     align-self: flex-start;
-    background-color: #0084ff;
+    background-color: #ff0000;
     color: #fff;
     border-bottom-left-radius: 2px;
     margin: 5px ;
