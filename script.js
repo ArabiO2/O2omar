@@ -29,6 +29,7 @@ const myId = localStorage.getItem("userId");
 // 3. وظيفة إرسال الرسائل
 window.sendMessage = function() {
   const input = document.getElementById("message-input");
+  const currentIsAdmin = localStorage.getItem("adminKey") === "omar_admin_77";
   if (input.value.trim() !== "") {
     push(messagesRef, {
       senderId: myId,
