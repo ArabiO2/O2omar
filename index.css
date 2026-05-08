@@ -1099,18 +1099,19 @@ body:has(.box:hover) footer {
 .enter {
   display: flex; 
   justify-content: center  ; 
-  align-items: center;
-  color: red ; 
   font-family: "for";
   
 }
 .enter  .inter {
+  display: flex;
+  justify-content: center;
   padding : 10px; 
   background-color: black ;
   color: red ;
   width : 85% ;
   margin: 5px;
   font-family: "for";
+  border-radius :15px ; 
 }
 .enter. inter a {
   text-decoration: underline;
