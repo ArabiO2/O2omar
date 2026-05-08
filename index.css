@@ -896,7 +896,7 @@ body:has(.box:hover) footer {
     font-size: 14px;
   }
 }
-.chat-container {
+/* .chat-container {
   background-color: #00ff00;
   color: #ffffff;
   font-family:"zain"
@@ -994,7 +994,7 @@ body:has(.box:hover) footer {
     max-height: none !important;
     overflow: visible !important;
 }
-
+/*
 .message {
     padding: 12px 18px;
     border-radius: 12px;
@@ -1008,7 +1008,6 @@ body:has(.box:hover) footer {
     box-sizing: border-box; 
 }
 
-/* رسايل المستخدمين التانيين (يمين) */
 .others-message {
     align-self: flex-end;
     background-color: black !important;
@@ -1018,7 +1017,6 @@ body:has(.box:hover) footer {
     margin: 5px ;
 }
 
-/* رسائلي أنا (شمال) */
 .my-message {
     align-self: flex-start;
     background-color: red !important;
@@ -1038,20 +1036,18 @@ body:has(.box:hover) footer {
     background: none;
     font-family: "zain" ; 
 }
-/* تطبيق الخط على الرسايل ومربع الكتابة والزرار */
+
 .message, #message-input, #send-btn {
     font-family: "zain" ;
 }
 
-/* تنسيق إضافي لنص الرسالة عشان يبان جمال الخط */
 .message span {
     display: block;
-    direction: rtl; /* عشان يظبط اتجاه العربي */
+    direction: rtl; 
     text-align: right;
   font-family: "zain"
 }
 
-/* الخلفية الشفافة والمغبشة (Blur) */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -1066,7 +1062,7 @@ body:has(.box:hover) footer {
     z-index: 1000;
 }
 
-/* صندوق المحتوى في نص الشاشة */
+/* 
 .modal-content {
     background: white;
     padding: 30px;
@@ -1083,7 +1079,7 @@ body:has(.box:hover) footer {
     to { transform: translateY(0); opacity: 1; }
 }
 
-/* زرار الإكس للقفل */
+
 .close-btn {
     position: absolute;
     top: 15px;
@@ -1094,4 +1090,189 @@ body:has(.box:hover) footer {
   font-family: "zain";
 }
 
-.close-btn:hover { color: #000; }
+.close-btn:hover { color: #000; } */
+
+/* 
+body {
+    margin: 0; 
+    padding: 0;
+    font-family: 'Cairo', sans-serif;
+    background-color: #0b0e11; 
+    color: white;
+    direction: rtl;
+    overflow-x: hidden; 
+}
+*/
+
+/* 
+header {
+    background: #15191c;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    z-index: 1000; 
+    box-sizing: border-box;
+    border-bottom: 1px solid #333;
+    height: 60px;
+}
+*/ 
+#user-info {
+    font-size: 14px;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+/* صندوق الشات */
+#chat-box {
+    padding: 80px 15px 100px; /* مسافة كافية للهيدر فوق ومنطقة الكتابة تحت */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* الرسايل */
+.message {
+    max-width: 85%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    word-wrap: break-word;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.5;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* رسايلي أنا (يمين - أحمر) */
+.my-message {
+    align-self: flex-start;
+    background: #e74c3c !important;
+    color: white !important;
+    border-bottom-right-radius: 4px;
+}
+
+/* رسايل الآخرين (شمال - أسود) */
+.others-message {
+    align-self: flex-end;
+    background: #1e2329 !important; /* أسود فاتح شوية عشان يبان */
+    color: white !important;
+    border: 1px solid #333;
+    border-bottom-left-radius: 4px;
+}
+
+/* منطقة الكتابة تحت */
+#input-area {
+    position: fixed; 
+    bottom: 0; 
+    left: 0;
+    width: 100%;
+    background: #15191c; 
+    padding: 15px;
+    display: flex; 
+    gap: 10px; 
+    box-sizing: border-box;
+    z-index: 900;
+    border-top: 1px solid #333;
+}
+
+#message-input {
+    flex: 1; 
+    padding: 12px 18px; 
+    border-radius: 25px;
+    border: 1px solid #444; 
+    background: #232a31; 
+    color: white;
+    outline: none;
+    font-family: inherit;
+}
+
+#message-input:focus {
+    border-color: #e74c3c;
+}
+
+/* الزراير */
+.btn {
+    padding: 8px 18px; 
+    border-radius: 20px; 
+    border: none;
+    cursor: pointer; 
+    font-weight: bold; 
+    font-family: inherit;
+    transition: 0.3s;
+}
+
+.primary { background: #e74c3c; color: white; }
+.primary:hover { background: #c0392b; }
+
+.secondary { background: #333; color: white; }
+.secondary:hover { background: #444; }
+
+/* النوافذ المنبثقة (Modals) */
+.modal-overlay {
+    position: fixed; 
+    top:0; 
+    left:0; 
+    width:100%; 
+    height:100%;
+    background: rgba(0,0,0,0.85); 
+    backdrop-filter: blur(8px); /* تأثير التغبيش */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 2000;
+}
+
+.modal-content {
+    background: #1c2229; 
+    padding: 25px; 
+    border-radius: 20px;
+    width: 90%; 
+    max-width: 380px; 
+    text-align: center;
+    border: 1px solid #333;
+    position: relative;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #888;
+}
+
+.modal-content input {
+    width: 100%; 
+    padding: 12px; 
+    margin: 10px 0;
+    background: #0b0e11; 
+    border: 1px solid #444; 
+    color: white;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+#login-notice {
+    text-align: center;
+    padding: 10px;
+    background: #15191c;
+    position: fixed;
+    bottom: 70px;
+    width: 100%;
+    font-size: 13px;
+    border-top: 1px solid #333;
+}
