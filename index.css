@@ -1112,6 +1112,7 @@ body:has(.box:hover) footer {
   font-family: "for";
   border-radius :15px ; 
   align-self: center;
+  margin: 0 auto ;
 }
 .enter. inter a {
   text-decoration: underline !important;
