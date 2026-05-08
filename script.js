@@ -1,4 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+/*import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, push, onChildAdded, remove, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 // 1. إعدادات فايربيز (الخاصة بك)
@@ -115,3 +115,4 @@ window.deleteMessage = function(id) {
       remove(ref(db, "messages/" + id));
   }
 };
+*/
