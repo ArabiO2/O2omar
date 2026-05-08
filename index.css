@@ -1092,8 +1092,8 @@ body:has(.box:hover) footer {
 
 .close-btn:hover { color: #000; } */
 
-/* 
-body {
+
+.newer {
     margin: 0; 
     padding: 0;
     font-family: 'Cairo', sans-serif;
@@ -1102,10 +1102,10 @@ body {
     direction: rtl;
     overflow-x: hidden; 
 }
-*/
 
-/* 
-header {
+
+
+.new {
     background: #15191c;
     padding: 10px 15px;
     display: flex;
@@ -1120,7 +1120,7 @@ header {
     border-bottom: 1px solid #333;
     height: 60px;
 }
-*/ 
+
 #user-info {
     font-size: 14px;
     font-weight: bold;
