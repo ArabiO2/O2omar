@@ -1098,23 +1098,26 @@ body:has(.box:hover) footer {
 
 .enter {
   display: flex; 
-  justify-content: center  ; 
-  font-family: "for";
-  
+  justify-content: center; /* توسيط بالعرض */
+  align-items: center;     /* توسيط بالطول لو الأب له ارتفاع */
+  font-family: "for", sans-serif;
+  width: 100%;             /* ضمان إن الأب واخد العرض كامل */
 }
-.enter  .inter {
+
+.enter .inter {
   display: flex;
-  justify-content: center;
-  padding : 10px; 
-  background-color: black ;
-  color: red ;
-  width : 85% ;
-  font-family: "for";
-  border-radius :15px ; 
-  align-self: center;
-  margin: 0 auto ;
+  justify-content: center; 
+  align-items: center;     /* عشان النص اللي جوه inter نفسه يبقى في النص */
+  padding: 10px; 
+  background-color: black;
+  color: red;
+  width: 85%;
+  border-radius: 15px; 
+  /* margin: 0 auto; مش محتاجها ما دام الأب flex ويحتوي على justify-content: center */
 }
-.enter. inter a {
+
+/* هنا كان في مسافة غلط بين .enter و .inter وصلحتها */
+.enter .inter a {
   text-decoration: underline !important;
   color: blue !important; 
 }
