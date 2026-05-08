@@ -1096,7 +1096,7 @@ body:has(.box:hover) footer {
 
 .close-btn:hover { color: #000; */ 
 
-.enter {
+.container {
   display: flex; 
   justify-content: center; /* توسيط بالعرض */
   align-items: center;     /* توسيط بالطول لو الأب له ارتفاع */
@@ -1104,7 +1104,7 @@ body:has(.box:hover) footer {
   width: 100%;             /* ضمان إن الأب واخد العرض كامل */
 }
 
-.enter .inter {
+.container .inter {
   display: flex;
   justify-content: center; 
   align-items: center;     /* عشان النص اللي جوه inter نفسه يبقى في النص */
@@ -1117,7 +1117,7 @@ body:has(.box:hover) footer {
 }
 
 /* هنا كان في مسافة غلط بين .enter و .inter وصلحتها */
-.enter .inter a {
+.container .inter a {
   text-decoration: underline !important;
   color: blue !important; 
 }
