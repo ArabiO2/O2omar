@@ -1122,5 +1122,5 @@ body:has(.box:hover) footer {
 /* تصحيح سلكتور اللينك */
 .enter .inter a {
   text-decoration: underline !important;
-  color: blue !important;
+  color: white !important;
 }
