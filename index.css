@@ -1096,28 +1096,31 @@ body:has(.box:hover) footer {
 
 .close-btn:hover { color: #000; */ 
 
-.container {
-  display: flex; 
-  justify-content: center; /* توسيط بالعرض */
-  align-items: center;     /* توسيط بالطول لو الأب له ارتفاع */
+.enter {
+  display: block;       /* هنغيرها لـ block عشان نعتمد على المارجن */
+  width: 100%;          /* لازم نضمن إن الأب واخد العرض كله */
+  text-align: center;   /* عشان أي نص أو عناصر inline تيجي في النص */
   font-family: "for", sans-serif;
-  width: 100%;             /* ضمان إن الأب واخد العرض كامل */
+  margin-top: 20px;     /* مسافة اختيارية من فوق */
 }
 
-.container .inter {
-  display: flex;
-  justify-content: center; 
-  align-items: center;     /* عشان النص اللي جوه inter نفسه يبقى في النص */
-  padding: 10px; 
+.enter .inter {
+  display: flex;        /* عشان نتحكم في اللي جوه المربع الأسود */
+  justify-content: center;
+  align-items: center;
+  
+  width: 85%;           /* العرض اللي أنت حددته */
+  margin: 0 auto !important; /* دي "كلمة السر" اللي هتجبره يسنتر نفسه بالعرض */
+  
+  padding: 15px; 
   background-color: black;
   color: red;
-  width: 85%;
-  border-radius: 15px; 
-  /* margin: 0 auto; مش محتاجها ما دام الأب flex ويحتوي على justify-content: center */
+  border-radius: 15px;
+  box-sizing: border-box; /* عشان الـ padding ميزودش العرض عن 85% */
 }
 
-/* هنا كان في مسافة غلط بين .enter و .inter وصلحتها */
-.container .inter a {
+/* تصحيح سلكتور اللينك */
+.enter .inter a {
   text-decoration: underline !important;
-  color: blue !important; 
+  color: blue !important;
 }
