@@ -18,16 +18,12 @@
   font-family: "for";
   src: url(foregore.otf);
 }
-
-
 :root {
   --main-color: #00eaff;
   --ar1: "zain.ttf";
   --eng1: "aman.otf";
   --eng12: "eng.otf";
 }
-
-
 * {
   box-sizing: border-box;
   user-select: none;
@@ -36,8 +32,6 @@
 
 body {
   margin: 0;
-  overflow-y: auto; 
-  height: auto; 
 }
 
 img {
@@ -57,7 +51,6 @@ a {
 html {
   scroll-behavior: smooth;
 }
-
 header {
   height: 60px;
   position: relative;
@@ -77,7 +70,7 @@ header::after {
   position: absolute;
   padding: 10px;
   background-color: black;
-  color: rgb(255, 0, 132);
+  color: rgb(255, 0, 0);
   width: fit-content;
   height: fit-content;
   left: 50%;
@@ -86,6 +79,7 @@ header::after {
   border-radius: 12px;
   font-family: "zain";
 }
+
 @media (max-width: 767px) {
   header {
     font-size: 13px;
@@ -138,13 +132,13 @@ header .container::after {
   header .container::after {
     content: "";
     position: absolute;
+    display: none;
     width: 80px;
     height: 80px;
-    display  none ; 
     background-color: yellow;
     z-index: 100;
     border-radius: 50%;
-    top: -95%;
+    top: -89%;
     margin-left: 46%;
     transform: translateX(-82%);
     filter: blur(3px);
@@ -166,14 +160,17 @@ header .container .logo {
 }
 @keyframes for-logo {
   50% {
-    transform: rotate(6deg) scale(1.4);
+    transform: rotate(1deg) scale(1.123);
+    color: #ff0000;
   }
   100% {
-    transform: rotate(-6deg) scale(1.4);
+    font-family: "eng";
+    transform: rotate(-1deg) scale(1.123);
+    color: #00eaff;
   }
 }
 header .container .logo:hover {
-  color: rgb(255,0,0);
+  color: rgb(255, 0, 0);
 }
 
 header .container ul {
@@ -184,7 +181,7 @@ header .container ul {
 header .container ul li {
   padding: 10px;
   transition: 0.3s;
-  color: black;
+  color: #fff;
   font-size: 14px;
 }
 header .container ul li:hover {
@@ -224,24 +221,6 @@ header .container ul li:hover a {
 .tele .gram a:hover {
   color: #000000;
 }
-
-
-.haha {
-  display: flex ; 
-  justify-content : center; margin 10px 0 ; 
-}
-.haha .ha {
-  width: 92% ; 
-  background-color: black; 
-  color: red ; 
-  font-family : "zain" ; 
-  padding 6px ; 
-  display: flex;
-  justify-content: center ; 
- 
-}
-
-
 /* start section of PDFs */
 .special-heading {
   text-align: center;
@@ -463,21 +442,6 @@ body:has(.box:hover) .spans-n {
   transform: scale(1.2);
 }
 
-.haha {
-  display: flex  ;
-  justify-content: center ; 
-}
-.haha .ha {
-  width : 95% ; 
-  background-color: black ; 
-  font-family: "zain" ; 
-  color: red ; 
-  display: flex; 
-  justify-content: center ; 
-  padding: 15px ; 
-  border-radius: 15px ; 
-}
-
 /* end section of PDFs */
 .motivation {
   margin-bottom: 40px;
@@ -505,9 +469,6 @@ body:has(.box:hover) .spans-n {
     color: green;
   }
 }
-
-
-
 /* SCREEN WIDTH  */
 
 .div2 {
@@ -827,7 +788,7 @@ form .textarea:has(.btnre:hover) .btnre::before {
   background-color: black;
 }
 /* End Reset button  */
-@media max-width:400px {
+@media (max-width: 400px) {
   form .textarea .btnre {
     position: relative;
     padding: 10px;
@@ -900,32 +861,33 @@ body:has(.box:hover) footer {
     font-size: 14px;
   }
 }
-/* .chat-container {
+
+.chat-container {
   background-color: #00ff00;
   color: #ffffff;
-  font-family:"zain"
+  font-family: "zain";
 }
 .chat-box {
-  display:flex ;
+  display: flex;
   justify-content: center;
   font-family: "zain";
-  color : black; 
+  color: black;
 }
 .input-area {
-  display:flex ;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
   font-family: "zain";
 }
- .chat-container .input-area  .text {
-  margin : 7px ; 
-  font-family: "zain"; 
-   border-radius: 15px ; 
-   padding: 4px ; 
- }
+.chat-container .input-area .text {
+  margin: 7px;
+  font-family: "zain";
+  border-radius: 15px;
+  padding: 4px;
+}
 
- .chat-container  .text:placeholder {
-   font-family: "zain";
- }
+.chat-container .text:placeholder {
+  font-family: "zain";
+}
 .chat-container .input-area .btn {
   position: relative;
   padding: 10px;
@@ -934,8 +896,8 @@ body:has(.box:hover) footer {
   color: wheat;
   border-radius: 15px;
   font-family: "zain";
-  cursor: pointer; 
-  margin: 5px 
+  cursor: pointer;
+  margin: 5px;
 }
 .chat-container .input-area .btn:hover {
   background-color: blue;
@@ -984,143 +946,118 @@ body:has(.box:hover) footer {
   background-color: black;
 }
 
-#chat-box {
-    border: 1px solid #ddd;
-    padding-left: 25px; /* مسافة إضافية ناحية الشمال مخصوص عشان الاسكرول */
-    box-sizing: border-box; /* بيمنع الصندوق إنه يكبر عن حجمه الطبيعي */
-    overflow-y: auto; /* اسكرول بالطول بس */
-    overflow-x: hidden; /* منع الاسكرول اللي بالعرض نهائياً */
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* مسافة بين كل رسالة والتانية */
-    padding: 20px; 
-  height: auto !important; 
-    max-height: none !important;
-    overflow: visible !important;
+.chat-box {
+  height: 400px;
+  border: 1px solid #ddd;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column; /* عشان الرسايل تنزل تحت بعض */
+  padding: 15px;
+  gap: 10px;
 }
-/*
+
 .message {
-    padding: 12px 18px;
-    border-radius: 12px;
-    max-width: 85%;
-    word-wrap: break-word;
-    font-size: 14px;
-    position: relative;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    font-family: "zain";
-    transition: all 1s ease;
-    box-sizing: border-box; 
+  padding: 8px 12px;
+  border-radius: 12px;
+  max-width: 70%;
+  word-wrap: break-word;
+  font-size: 14px;
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font-family: "zain";
+  transition: all 1s ease;
 }
 
 .others-message {
-    align-self: flex-end;
-    background-color: black !important;
-    color: red !important ;
-    border-bottom-right-radius: 2px;
-    font-family: "zain" ;
-    margin: 5px ;
+  align-self: flex-start;
+  background-color: #ffffff;
+  color: #000;
+  border-bottom-right-radius: 2px;
+  font-family: "zain";
+  margin: 4px;
 }
 
+/* رسائلي أنا (شمال) */
 .my-message {
-    align-self: flex-start;
-    background-color: red !important;
-    color: black !important ;
-    border-bottom-left-radius: 2px;
-    margin: 5px ;
-    font-family: "zain" ; 
-    
-}
-
-.delete-btn {
-    font-size: 10px;
-    margin-right: 8px;
-    color: white !important ;
-    cursor: pointer;
-    border: none;
-    background: none;
-    font-family: "zain" ; 
-}
-
-.message, #message-input, #send-btn {
-    font-family: "zain" ;
-}
-
-.message span {
-    display: block;
-    direction: rtl; 
-    text-align: right;
-  font-family: "zain"
-}
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* سواد خفيف */
-    backdrop-filter: blur(8px); /* تأثير التغبيش */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-/* 
-.modal-content {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 400px;
-    position: relative;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    animation: fadeIn 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-    from { transform: translateY(-20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-
-.close-btn {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 25px;
-    cursor: pointer;
-    color: #888;
+  align-self: flex-end;
+  background-color: #0084ff;
+  color: #fff;
+  border-bottom-left-radius: 2px;
+  margin: 4px;
   font-family: "zain";
 }
 
-.close-btn:hover { color: #000; */ 
-
-.enter {
-  display: block;       /* هنغيرها لـ block عشان نعتمد على المارجن */
-  width: 100%;          /* لازم نضمن إن الأب واخد العرض كله */
-  text-align: center;   /* عشان أي نص أو عناصر inline تيجي في النص */
-  font-family: "for", sans-serif;
-  margin-top: 20px;     /* مسافة اختيارية من فوق */
+.delete-btn {
+  font-size: 10px;
+  margin-right: 8px;
+  color: #ff4d4d;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+/* تطبيق الخط على الرسايل ومربع الكتابة والزرار */
+.message,
+#message-input,
+#send-btn {
+  font-family: "zain";
 }
 
-.enter .inter {
-  display: flex;        /* عشان نتحكم في اللي جوه المربع الأسود */
+/* تنسيق إضافي لنص الرسالة عشان يبان جمال الخط */
+.message span {
+  display: block;
+  direction: rtl; /* عشان يظبط اتجاه العربي */
+  text-align: right;
+  font-family: "zain";
+}
+
+/* الخلفية الشفافة والمغبشة (Blur) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* سواد خفيف */
+  backdrop-filter: blur(8px); /* تأثير التغبيش */
+  display: flex;
   justify-content: center;
   align-items: center;
-  
-  width: 85%;           /* العرض اللي أنت حددته */
-  margin: 0 auto !important; /* دي "كلمة السر" اللي هتجبره يسنتر نفسه بالعرض */
-  
-  padding: 15px; 
-  background-color: black;
-  color: red;
-  border-radius: 15px;
-  box-sizing: border-box; /* عشان الـ padding ميزودش العرض عن 85% */
+  z-index: 1000;
 }
 
-/* تصحيح سلكتور اللينك */
-.enter .inter a {
-  text-decoration: underline !important;
-  color: white !important;
+/* صندوق المحتوى في نص الشاشة */
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-out;
 }
+
+@keyframes fadeIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* زرار الإكس للقفل */
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 25px;
+  cursor: pointer;
+  color: #888;
+}
+
+.close-btn:hover {
+  color: #000;
+  }
