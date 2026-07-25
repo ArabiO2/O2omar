@@ -510,6 +510,18 @@ body:has(.box:hover) .spans-n {
 
 /* SCREEN WIDTH  */
 
+.div1 {
+  display: none;
+  background-color: var(--main-color);
+  color: black;
+  padding: 10px;
+}
+@media (min-width: 100px) and (max-width: 200px) {
+  .div1 {
+    display: block;
+  }
+}
+
 .div2 {
   display: none;
   background-color: var(--main-color);
