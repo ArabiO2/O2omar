@@ -71,7 +71,7 @@ header {
   z-index: 20;
   transition: 0.5s;
   margin-top: 5px;
-}
+  margin-bottom : 40px ; }
 header::after {
   content: " أقل جودة بأعلي الأسعار";
   position: absolute;
