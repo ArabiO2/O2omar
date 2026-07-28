@@ -26,7 +26,7 @@
   --eng1: "aman.otf";
   --eng12: "eng.otf";
 }
-
+/*
 .post-card {
       width: 300px;
       margin: 50px auto;
@@ -37,7 +37,7 @@
       font-family: Arial, sans-serif;
     }
 
-    /* تنسيق زرار اللايك الافتراضي */
+    /* تنسيق زرار اللايك الافتراضي 
     .fb-like-btn {
       display: inline-flex;
       align-items: center;
@@ -46,7 +46,7 @@
       padding: 8px 16px;
       border: none;
       background-color: transparent;
-      color: #65676b; /* اللون الرمادي بتاع فيسبوك */
+      color: #65676b; /* اللون الرمادي بتاع فيسبوك 
       font-size: 15px;
       font-weight: 600;
       border-radius: 4px;
@@ -55,26 +55,107 @@
       user-select: none;
     }
 
-    /* تأثير عند تحريك الماوس فوق الزرار */
+    /* تأثير عند تحريك الماوس فوق الزرار 
     .fb-like-btn:hover {
       background-color: #f0f2f5;
     }
 
-    /* الحالة المفعّلة (لما يدوس عليه بيبقى أزرق) */
+    /* الحالة المفعّلة (لما يدوس عليه بيبقى أزرق) 
     .fb-like-btn.liked {
-      color: #0866ff; /* أزرق فيسبوك الرسمي */
+      color: #0866ff; /* أزرق فيسبوك الرسمي 
     }
 
-    /* أيكونة اليد */
+    /* أيكونة اليد 
     .fb-like-btn i {
       font-size: 18px;
       transition: transform 0.15s ease;
     }
 
-    /* حركة بسيطة للأيكونة لما تضغط عليها */
+    /* حركة بسيطة للأيكونة لما تضغط عليها 
     .fb-like-btn:active i {
       transform: scale(1.2) rotate(-10deg);
-      }
+      } */
+ .post-card {
+      width: 350px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* عداد اللايكات */
+    .likes-count {
+      font-size: 14px;
+      color: #65676b;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .likes-count i {
+      color: #0866ff;
+    }
+
+    .divider {
+      height: 1px;
+      background-color: #e4e6eb;
+      margin: 8px 0;
+    }
+
+    /* زرار اللايك */
+    .fb-like-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 0;
+      border: none;
+      background-color: transparent;
+      color: #65676b;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .fb-like-btn:hover {
+      background-color: #f0f2f5;
+    }
+
+    .fb-like-btn.liked {
+      color: #0866ff;
+    }
+
+    /* قائمة الأسماء */
+    .likers-list {
+      margin-top: 15px;
+      background-color: #f8f9fa;
+      border-radius: 6px;
+      padding: 10px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    .likers-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: #65676b;
+      margin-bottom: 8px;
+    }
+
+    .liker-item {
+      font-size: 13px;
+      color: #050505;
+      padding: 3px 0;
+      border-bottom: 1px dashed #e4e6eb;
+    }
+
+    .liker-item:last-child {
+      border-bottom: none;
+    }
 * {
   box-sizing: border-box;
   user-select: none;
