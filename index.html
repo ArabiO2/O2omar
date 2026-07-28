@@ -34,13 +34,38 @@
       </div>
     </header>
     <!-- end header -->
-    
+    <!--
     <div class="post-card">
     <button class="fb-like-btn" id="likeBtn">
       <i class="fa-regular fa-thumbs-up" id="likeIcon"></i>
       <span>حد هنا ؟؟</span>
     </button>
+    </div> -->
+     <div class="post-card">
+    <!-- عداد اللايكات -->
+    <div class="likes-count">
+      <i class="fa-solid fa-thumbs-up"></i>
+      <span id="count">0</span> شخص أُعجب بهذا
     </div>
+
+    <div class="divider"></div>
+
+    <!-- زرار اللايك -->
+    <button class="fb-like-btn" id="likeBtn">
+      <i class="fa-regular fa-thumbs-up" id="likeIcon"></i>
+      <span>أعجبني</span>
+    </button>
+
+    <div class="divider"></div>
+
+    <!-- قائمة أسماء المعجبين -->
+    <div class="likers-list">
+      <div class="likers-title">المعجبون:</div>
+      <div id="namesContainer">
+        <!-- الأسماء هتنزل هنا تلقائياً -->
+      </div>
+    </div>
+     </div>
     
     <div class="special-heading">PDFs : Vocabs</div>
 
@@ -173,23 +198,70 @@
     </footer>
 <!-- <script type="module" src="script.js" >
   </script> -->
-     <script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    // 1. ضع بيانات مشروعك من Firebase هنا
+    const firebaseConfig = {
+  apiKey: "AIzaSyDxGgBoMRAjm-OEi7w9apM7XFicGcQHD8I",
+  authDomain: "for-chats-short.firebaseapp.com",
+  databaseURL: "https://for-chats-short-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "for-chats-short",
+  storageBucket: "for-chats-short.firebasestorage.app",
+  messagingSenderId: "113257158151",
+  appId: "1:113257158151:web:941c7624d7f12b74a53ca2"
+};
+
+    // تهيئة Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const likesRef = ref(db, "likes");
+
     const likeBtn = document.getElementById('likeBtn');
     const likeIcon = document.getElementById('likeIcon');
+    const countSpan = document.getElementById('count');
+    const namesContainer = document.getElementById('namesContainer');
 
-    likeBtn.addEventListener('click', () => {
-      // تبديل كلاس liked للتلوين بالأزرق
-      likeBtn.classList.toggle('liked');
+    // 2. الاستماع لتغييرات البيانات (تحديث فورى عند الجميع)
+    onValue(likesRef, (snapshot) => {
+      const data = snapshot.val();
+      namesContainer.innerHTML = '';
+      
+      if (data) {
+        const entries = Object.values(data);
+        countSpan.textContent = entries.length;
 
-      // تبديل شكل الأيكونة بين المفرغة والممتلئة
-      if (likeBtn.classList.contains('liked')) {
-        likeIcon.classList.remove('fa-regular');
-        likeIcon.classList.add('fa-solid');
+        // عرض كل الأسماء التي عملت لايك
+        entries.forEach(entry => {
+          const div = document.createElement('div');
+          div.className = 'liker-item';
+          div.textContent = `👍 ${entry.name}`;
+          namesContainer.appendChild(div);
+        });
       } else {
-        likeIcon.classList.remove('fa-solid');
-        likeIcon.classList.add('fa-regular');
+        countSpan.textContent = '0';
+        namesContainer.innerHTML = '<div style="color:#8a8d91; font-size:12px;">لا يوجد إعجابات بعد</div>';
       }
     });
-     </script>
+
+    // 3. عند الضغط على زرار اللايك
+    likeBtn.addEventListener('click', () => {
+      const userName = prompt("ادخل اسمك لتسجيل الإعجاب:");
+      
+      if (userName && userName.trim() !== "") {
+        // حفظ الاسم في قاعدة البيانات للجميع
+        push(likesRef, {
+          name: userName.trim(),
+          timestamp: Date.now()
+        });
+
+        // تغيير شكل الزرار مؤقتاً للتفاعل
+        likeBtn.classList.add('liked');
+        likeIcon.classList.remove('fa-regular');
+        likeIcon.classList.add('fa-solid');
+      }
+    });
+      </script>
   </body>
 </html>
