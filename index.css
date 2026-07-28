@@ -27,7 +27,54 @@
   --eng12: "eng.otf";
 }
 
+.post-card {
+      width: 300px;
+      margin: 50px auto;
+      padding: 15px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      font-family: Arial, sans-serif;
+    }
 
+    /* تنسيق زرار اللايك الافتراضي */
+    .fb-like-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border: none;
+      background-color: transparent;
+      color: #65676b; /* اللون الرمادي بتاع فيسبوك */
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      user-select: none;
+    }
+
+    /* تأثير عند تحريك الماوس فوق الزرار */
+    .fb-like-btn:hover {
+      background-color: #f0f2f5;
+    }
+
+    /* الحالة المفعّلة (لما يدوس عليه بيبقى أزرق) */
+    .fb-like-btn.liked {
+      color: #0866ff; /* أزرق فيسبوك الرسمي */
+    }
+
+    /* أيكونة اليد */
+    .fb-like-btn i {
+      font-size: 18px;
+      transition: transform 0.15s ease;
+    }
+
+    /* حركة بسيطة للأيكونة لما تضغط عليها */
+    .fb-like-btn:active i {
+      transform: scale(1.2) rotate(-10deg);
+      }
 * {
   box-sizing: border-box;
   user-select: none;
