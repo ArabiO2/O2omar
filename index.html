@@ -171,7 +171,25 @@
       &blacktriangleright; my regards , OMAR &copy; All rights reserved &reg;
       &starf; &blacktriangleleft;
     </footer>
-<script type="module" src="script.js" >
-  </script>
+<!-- <script type="module" src="script.js" >
+  </script> -->
+     <script>
+    const likeBtn = document.getElementById('likeBtn');
+    const likeIcon = document.getElementById('likeIcon');
+
+    likeBtn.addEventListener('click', () => {
+      // تبديل كلاس liked للتلوين بالأزرق
+      likeBtn.classList.toggle('liked');
+
+      // تبديل شكل الأيكونة بين المفرغة والممتلئة
+      if (likeBtn.classList.contains('liked')) {
+        likeIcon.classList.remove('fa-regular');
+        likeIcon.classList.add('fa-solid');
+      } else {
+        likeIcon.classList.remove('fa-solid');
+        likeIcon.classList.add('fa-regular');
+      }
+    });
+     </script>
   </body>
 </html>
